@@ -27,3 +27,10 @@
 *.exe
 *.out
 *.app
+
+# IDE-specific files
+.project
+.cproject
+
+# Misc
+**/build*/
