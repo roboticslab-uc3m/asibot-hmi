@@ -3,11 +3,11 @@
 #include "WebInterface.hpp"
 
 /************************************************************************/
-WebInterface::WebInterface() { }
+roboticslab::WebInterface::WebInterface() { }
 
 /************************************************************************/
-bool WebInterface::configure(ResourceFinder &rf) {
-
+bool roboticslab::WebInterface::configure(ResourceFinder &rf)
+{
     period = DEFAULT_PERIOD;  // double
     ConstString resources = DEFAULT_RESOURCES;
     ConstString webIp = DEFAULT_WEB_IP;
@@ -60,7 +60,8 @@ bool WebInterface::configure(ResourceFinder &rf) {
 }
 
 /************************************************************************/
-bool WebInterface::updateModule() {
+bool roboticslab::WebInterface::updateModule()
+{
     printf("Server running, visit: http://%s:%d/index\n",
                    contact.getHost().c_str(),
                    contact.getPort());
@@ -76,12 +77,14 @@ bool WebInterface::updateModule() {
 }
 
 /************************************************************************/
-double WebInterface::getPeriod() {
+double roboticslab::WebInterface::getPeriod()
+{
     return period;  // seconds
 }
 
 /************************************************************************/
-bool WebInterface::interruptModule() {
+bool roboticslab::WebInterface::interruptModule()
+{
     server.interrupt();
     responder.closeDevices();
     server.close();

@@ -52,36 +52,40 @@ Server running, visit: http://127.0.0.1:8080/index
  *
  */
 
+#include <cstdio>
+#include <yarp/os/ResourceFinder.h>
+#include <yarp/os/Network.h>
 #include "WebInterface.hpp"
 
-using namespace yarp::os;
-using namespace yarp::dev;
-
-YARP_DECLARE_PLUGINS(RlPlugins);
-
-int main(int argc, char *argv[]) {
-
-    YARP_REGISTER_PLUGINS(RlPlugins);
-
-    ResourceFinder rf;
+int main(int argc, char *argv[])
+{
+    yarp::os::ResourceFinder rf;
     rf.setVerbose(true);
     rf.setDefaultContext("webInterface");
     rf.setDefaultConfigFile("webInterface.ini");
     rf.configure(argc, argv);
 
-    WebInterface mod;
-    if(rf.check("help")) {
+    roboticslab::WebInterface mod;
+
+    if (rf.check("help"))
+    {
         return mod.runModule(rf);
     }
 
-    printf("Run \"webInterface --help\" for options.\n");
-    printf("webInterface checking for yarp network... ");
-    fflush(stdout);
-    Network yarp;
-    if (!yarp.checkNetwork()) {
-        fprintf(stderr, "[fail]\nwebInterface found no yarp network (try running \"yarpserver &\"), bye!\n");
+    std::printf("Run \"webInterface --help\" for options.\n");
+    std::printf("webInterface checking for yarp network...\n");
+
+    yarp::os::Network yarp;
+
+    if (!yarp.checkNetwork())
+    {
+        std::fprintf(stderr, "[fail]\nwebInterface found no yarp network (try running \"yarpserver &\"), bye!\n");
         return -1;
-    } else printf("[ok]\n");
+    }
+    else
+    {
+        std::printf("[ok]\n");
+    }
 
     return mod.runModule(rf);
 }

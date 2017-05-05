@@ -3,7 +3,8 @@
 #include "WebResponder.hpp"
 
 /************************************************************************/
-bool WebResponder::init() {
+bool roboticslab::WebResponder::init()
+{
     simConnected = false;
     realConnected = false;
     simPos = 0;
@@ -17,7 +18,8 @@ bool WebResponder::init() {
 }
 
 /************************************************************************/
-bool WebResponder::closeDevices() {
+bool roboticslab::WebResponder::closeDevices()
+{
     if(realDevice.isValid())
         realDevice.close();
     if(simDevice.isValid())
@@ -36,25 +38,29 @@ bool WebResponder::closeDevices() {
 }
 
 /************************************************************************/
-bool WebResponder::setResourceFinder(ResourceFinder &rf) {
+bool roboticslab::WebResponder::setResourceFinder(ResourceFinder &rf)
+{
     this->rf = rf;
     return true;
 }
 
 /************************************************************************/
-bool WebResponder::setUserPath(const ConstString& _userPath) {
+bool roboticslab::WebResponder::setUserPath(const ConstString& _userPath)
+{
     userPath = _userPath;
     return true;
 }
 
 /************************************************************************/
-bool WebResponder::setResourcePath(const ConstString& _resourcePath) {
+bool roboticslab::WebResponder::setResourcePath(const ConstString& _resourcePath)
+{
     resourcePath = _resourcePath;
     return true;
 }
 
 /************************************************************************/
-string& WebResponder::replaceAll(string& context, const string& from, const string& to) {
+std::string& roboticslab::WebResponder::replaceAll(string& context, const string& from, const string& to)
+{
     // thank you Bruce Eckel for this one!! (TICPP-2nd-ed-Vol-two)
     size_t lookHere = 0;
     size_t foundHere;
@@ -66,13 +72,15 @@ string& WebResponder::replaceAll(string& context, const string& from, const stri
 }
 
 /************************************************************************/
-string WebResponder::readHtml(const ConstString& fileName) {
+std::string roboticslab::WebResponder::readHtml(const ConstString& fileName)
+{
     ConstString filePath = rf.findFileByName("html/"+fileName);
     return readFile(filePath);
 }
 
 /************************************************************************/
-string WebResponder::readFile(const ConstString& filePath) {
+std::string roboticslab::WebResponder::readFile(const ConstString& filePath)
+{
     printf("filePath: %s\n",filePath.c_str());
     // thank you Tyler McHenry @ nerdland.net and KeithB @ ndssl.vbi.vt.edu for this algorithm
     // link: http://stackoverflow.com/questions/2602013/read-whole-ascii-file-into-c-stdstring [2012-02-06]
@@ -98,7 +106,8 @@ string WebResponder::readFile(const ConstString& filePath) {
 }
 
 /************************************************************************/
-bool WebResponder::appendToFile(const ConstString& fileName, const ConstString& inString) {
+bool roboticslab::WebResponder::appendToFile(const ConstString& fileName, const ConstString& inString)
+{
     ConstString filePath = userPath + fileName;
     printf("saving: %s\n",inString.c_str());
     printf("to file: %s\n",filePath.c_str());
@@ -109,7 +118,8 @@ bool WebResponder::appendToFile(const ConstString& fileName, const ConstString& 
 }
 
 /************************************************************************/
-bool WebResponder::rewriteFile(const ConstString& fileName, const ConstString& inString) {
+bool roboticslab::WebResponder::rewriteFile(const ConstString& fileName, const ConstString& inString)
+{
     ConstString filePath = userPath + fileName;
     printf("rewriting: %s\n",inString.c_str());
     printf("to file: %s\n",filePath.c_str());
@@ -120,7 +130,8 @@ bool WebResponder::rewriteFile(const ConstString& fileName, const ConstString& i
 }
 
 /************************************************************************/
-bool WebResponder::deleteFile(const ConstString& absFile){ // needs absoulte path
+bool roboticslab::WebResponder::deleteFile(const ConstString& absFile)
+{
     if (remove(absFile.c_str()) != 0 ) {
         printf("[error] could not delete file");
         return false;
@@ -129,7 +140,8 @@ bool WebResponder::deleteFile(const ConstString& absFile){ // needs absoulte pat
 }
 
 /************************************************************************/
-int WebResponder::stringToInt(const ConstString& inString) {
+int roboticslab::WebResponder::stringToInt(const ConstString& inString)
+{
     int outInt;
     std::istringstream buffer(inString.c_str());
     buffer >> outInt;
@@ -138,7 +150,8 @@ int WebResponder::stringToInt(const ConstString& inString) {
 }
 
 /************************************************************************/
-double WebResponder::stringToDouble(const ConstString& inString) {
+double roboticslab::WebResponder::stringToDouble(const ConstString& inString)
+{
     double outDouble;
     std::istringstream buffer(inString.c_str());
     buffer >> outDouble;
@@ -147,7 +160,8 @@ double WebResponder::stringToDouble(const ConstString& inString) {
 }
 
 /************************************************************************/
-ConstString WebResponder::doubleToString(const double& inDouble) {
+yarp::os::ConstString roboticslab::WebResponder::doubleToString(const double& inDouble)
+{
     // [thank you Adam Rosenfield] http://stackoverflow.com/questions/1123201/convert-double-to-string-c
     std::ostringstream s;
     s << inDouble;
@@ -155,14 +169,16 @@ ConstString WebResponder::doubleToString(const double& inDouble) {
 }
 
 /************************************************************************/
-ConstString WebResponder::intToString(const int& inInt) {
+yarp::os::ConstString roboticslab::WebResponder::intToString(const int& inInt)
+{
     std::ostringstream s;
     s << inInt;
     return ConstString(s.str().c_str());
 }
 
 /************************************************************************/
-ConstString WebResponder::pipedExec(const ConstString& cmd) {
+yarp::os::ConstString roboticslab::WebResponder::pipedExec(const ConstString& cmd)
+{
     // http://stackoverflow.com/a/478960
     const int bufferSize = 128;
     char buffer[bufferSize];
@@ -192,7 +208,8 @@ ConstString WebResponder::pipedExec(const ConstString& cmd) {
 }
 
 /************************************************************************/
-ConstString WebResponder::pointButtonCreator(const ConstString& pointsFile) {
+yarp::os::ConstString roboticslab::WebResponder::pointButtonCreator(const ConstString& pointsFile)
+{
     ConstString ret;
     printf("Reading points from file: %s\n",pointsFile.c_str());
     std::ifstream ifs(pointsFile.c_str());
@@ -233,7 +250,8 @@ ConstString WebResponder::pointButtonCreator(const ConstString& pointsFile) {
 }
 
 /************************************************************************/
-ConstString WebResponder::wordOptionCreator(const ConstString& wordsFile) {
+yarp::os::ConstString roboticslab::WebResponder::wordOptionCreator(const ConstString& wordsFile)
+{
     ConstString ret;
     printf("Reading words from file: %s\n",wordsFile.c_str());
     std::ifstream ifs(wordsFile.c_str());
@@ -269,7 +287,7 @@ ConstString WebResponder::wordOptionCreator(const ConstString& wordsFile) {
 }
 
 #ifdef WIN32
-ConstString WebResponder::fileListCreator() {
+yarp::os::ConstString roboticslab::WebResponder::fileListCreator() {
     ConstString ret;
     ConstString filePath = userPath.substr(0, filePath.size() - 1) + "\\*";
     printf("Reading files from: %s\n", filePath.c_str());
@@ -293,7 +311,7 @@ ConstString WebResponder::fileListCreator() {
 }
 
 /************************************************************************/
-ConstString WebResponder::taskListCreator() {
+yarp::os::ConstString roboticslab::WebResponder::taskListCreator() {
     ConstString ret;
     ConstString filePath = userPath.substr(0, filePath.size() - 1) + "\\*";
     printf("Reading files from: %s\n", filePath.c_str());
@@ -317,7 +335,7 @@ ConstString WebResponder::taskListCreator() {
 }
 
 /************************************************************************/
-ConstString WebResponder::taskButtonCreator() {
+yarp::os::ConstString roboticslab::WebResponder::taskButtonCreator() {
     ConstString ret;
     ConstString filePath = userPath.substr(0, filePath.size() - 1) + "\\*";
     printf("Reading files from: %s\n", filePath.c_str());
@@ -373,7 +391,8 @@ ConstString WebResponder::taskButtonCreator() {
 #else
 
 /************************************************************************/
-ConstString WebResponder::fileListCreator() {
+yarp::os::ConstString roboticslab::WebResponder::fileListCreator()
+{
     ConstString ret;
     ConstString filePath = userPath;
     printf("Reading files from: %s\n",filePath.c_str());
@@ -397,7 +416,8 @@ ConstString WebResponder::fileListCreator() {
 }
 
 /************************************************************************/
-ConstString WebResponder::taskListCreator() {
+yarp::os::ConstString roboticslab::WebResponder::taskListCreator()
+{
     ConstString ret;
     ConstString filePath = userPath;
     printf("Reading files from: %s\n",filePath.c_str());
@@ -421,7 +441,8 @@ ConstString WebResponder::taskListCreator() {
 }
 
 /************************************************************************/
-ConstString WebResponder::taskButtonCreator() {
+yarp::os::ConstString roboticslab::WebResponder::taskButtonCreator()
+{
     ConstString ret;
     ConstString filePath = userPath;
     printf("Reading files from: %s\n",filePath.c_str());
@@ -477,12 +498,14 @@ ConstString WebResponder::taskButtonCreator() {
 #endif
 
 /************************************************************************/
-ConstString WebResponder::getCss() {
+yarp::os::ConstString roboticslab::WebResponder::getCss()
+{
     return ConstString(readHtml("style.css").c_str());
 }
 
 /************************************************************************/
-bool WebResponder::read(ConnectionReader& in) {
+bool roboticslab::WebResponder::read(ConnectionReader& in)
+{
     Bottle request, response;
     if (!request.read(in)) return false;
     printf("Request: %s\n", request.toString().c_str());

@@ -1,7 +1,7 @@
 // -*- mode:C++; tab-width:4; c-basic-offset:4; indent-tabs-mode:nil -*-
 
-#ifndef __WEB_RESPONDER__
-#define __WEB_RESPONDER__
+#ifndef __WEB_RESPONDER_HPP__
+#define __WEB_RESPONDER_HPP__
 
 #include <yarp/os/all.h>
 
@@ -26,42 +26,55 @@
 #define CJOYPAD_RELMOVE_ORI 15  // [deg]
 #define NUM_CART_COORDS 5  // 
 
-using namespace yarp::os;
-using namespace yarp::dev;
+namespace roboticslab
+{
 
-using std::string;
+using namespace yarp::os;  // FIXME
+using namespace std;  // FIXME
 
 /**
  *
- * @ingroup webResponder
+ * @ingroup webInterface
  *
  * The WebResponder class manages YARP web RPCs as callbacks and additionally
  * manages resouces and parses HTML code before acting as a mini-server. Used by
  * WebInterface.
  *
  */
-class WebResponder : public PortReader {
+class WebResponder : public yarp::os::PortReader
+{
+public:
+
+    yarp::os::ConstString getCss();
+    bool init();
+    bool closeDevices();
+    bool read(yarp::os::ConnectionReader& in);
+    bool setResourceFinder(yarp::os::ResourceFinder &rf);
+    bool setUserPath(const yarp::os::ConstString& _userPath);
+    bool setResourcePath(const yarp::os::ConstString& _resourcePath);
+
 protected:
-    ResourceFinder rf;
+
+    yarp::os::ResourceFinder rf;
     bool simConnected, realConnected;
-    ConstString userPath;
-    ConstString resourcePath;
-    string readFile(const ConstString& filePath);  // needs absoulte path
-    string readHtml(const ConstString& fileName);  // grabs from htmlPath
-    bool appendToFile(const ConstString& absFile, const ConstString& inString); // writes to userPath
-    bool rewriteFile(const ConstString& absFile, const ConstString& inString); // writes to userPath
-    bool deleteFile(const ConstString& absFile); // needs absoulte path
-    string& replaceAll(string& context, const string& from, const string& to);
-    int stringToInt(const ConstString& inString);
-    double stringToDouble(const ConstString& inString);
-    ConstString doubleToString(const double& inDouble);
-    ConstString intToString(const int& inInt);
-    ConstString pipedExec(const ConstString& cmd);
-    ConstString pointButtonCreator(const ConstString& pointsFile);
-    ConstString wordOptionCreator(const ConstString& wordsFile);
-    ConstString fileListCreator();
-    ConstString taskListCreator();
-    ConstString taskButtonCreator();
+    yarp::os::ConstString userPath;
+    yarp::os::ConstString resourcePath;
+    std::string readFile(const yarp::os::ConstString& filePath);  // needs absoulte path
+    std::string readHtml(const yarp::os::ConstString& fileName);  // grabs from htmlPath
+    bool appendToFile(const yarp::os::ConstString& absFile, const yarp::os::ConstString& inString); // writes to userPath
+    bool rewriteFile(const yarp::os::ConstString& absFile, const yarp::os::ConstString& inString); // writes to userPath
+    bool deleteFile(const yarp::os::ConstString& absFile); // needs absoulte path
+    std::string& replaceAll(std::string& context, const std::string& from, const std::string& to);
+    int stringToInt(const yarp::os::ConstString& inString);
+    double stringToDouble(const yarp::os::ConstString& inString);
+    yarp::os::ConstString doubleToString(const double& inDouble);
+    yarp::os::ConstString intToString(const int& inInt);
+    yarp::os::ConstString pipedExec(const yarp::os::ConstString& cmd);
+    yarp::os::ConstString pointButtonCreator(const yarp::os::ConstString& pointsFile);
+    yarp::os::ConstString wordOptionCreator(const yarp::os::ConstString& wordsFile);
+    yarp::os::ConstString fileListCreator();
+    yarp::os::ConstString taskListCreator();
+    yarp::os::ConstString taskButtonCreator();
 
     yarp::dev::PolyDriver simDevice;
     yarp::dev::IPositionControl *simPos;
@@ -74,17 +87,9 @@ protected:
     CartesianClient *realCart;  // != ICartesianControl
 
     double captureX[NUM_CART_COORDS];
-    ConstString lastEditName;
-
-public:
-    ConstString getCss();
-    bool init();
-    bool closeDevices();
-    bool read(ConnectionReader& in);
-    bool setResourceFinder(ResourceFinder &rf);
-    bool setUserPath(const ConstString& _userPath);
-    bool setResourcePath(const ConstString& _resourcePath);
+    yarp::os::ConstString lastEditName;
 };
 
-#endif
+}  //-- namespace roboticslab
 
+#endif  //-- __WEB_RESPONDER_HPP__

@@ -1,13 +1,10 @@
 // -*- mode:C++; tab-width:4; c-basic-offset:4; indent-tabs-mode:nil -*-
 
-#ifndef __WEB_INTERFACE__
-#define __WEB_INTERFACE__
+#ifndef __WEB_INTERFACE_HPP__
+#define __WEB_INTERFACE_HPP__
 
 #include <yarp/os/RFModule.h>
-#include <yarp/os/Module.h>
-#include <yarp/os/Network.h>
 #include <yarp/os/Port.h>
-#include <yarp/os/BufferedPort.h>
 #include <yarp/os/Contact.h>
 
 #include "WebResponder.hpp"
@@ -17,26 +14,35 @@
 #define DEFAULT_WEB_IP "localhost"
 #define DEFAULT_WEB_PORT 8080
 
-using namespace yarp::os;
+namespace roboticslab
+{
 
-class WebInterface : public RFModule {
+using namespace yarp::os;  // FIXME
+
+/**
+ * @ingroup webInterface
+ */
+class WebInterface : public yarp::os::RFModule
+{
+public:
+
+    WebInterface();
+    bool configure(yarp::os::ResourceFinder &rf);
+
 protected:
 
-    Port server;
+    yarp::os::Port server;
     WebResponder responder;
-    Contact contact;  // will get webIp and webPort
+    yarp::os::Contact contact;  // will get webIp and webPort
 
     bool updateModule();
     bool interruptModule();
     double getPeriod();
+
     double period;
-
     int counter;
-
-public:
-    WebInterface();
-    bool configure(ResourceFinder &rf);
 };
 
-#endif
+}  //-- namespace roboticslab
 
+#endif  //-- __WEB_INTERFACE_HPP__
