@@ -24,9 +24,9 @@ cpack_add_component(example_library
                     GROUP libraries
                     INSTALL_TYPES full)
 
-cpack_add_component(example_program
-                    DISPLAY_NAME "Example program"
-                    DESCRIPTION "Executable of example program."
+cpack_add_component(web_interface
+                    DISPLAY_NAME "Web interface"
+                    DESCRIPTION "Web interface program."
                     GROUP applications
                     DEPENDS example_library
                     INSTALL_TYPES full)
@@ -46,9 +46,9 @@ cpack_add_install_type(full
                        DISPLAY_NAME "Full install")
 
 # Create shortcuts for executables.
-if(ENABLE_exampleProgram)
-    list(APPEND CPACK_PACKAGE_EXECUTABLES exampleProgram "Example program")
-    list(APPEND CPACK_CREATE_DESKTOP_LINKS exampleProgram)
+if(ENABLE_webInterface)
+    list(APPEND CPACK_PACKAGE_EXECUTABLES webInterface "Example program")
+    list(APPEND CPACK_CREATE_DESKTOP_LINKS webInterface)
 endif()
 
 # NSIS-specific configuration variables.
