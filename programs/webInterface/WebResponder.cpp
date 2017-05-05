@@ -580,7 +580,7 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
             printf("Connecting to robot simulator.\n");
             Property optionsDevice;
             optionsDevice.put("device","remote_controlboard");
-            optionsDevice.put("remote","/ravebot");
+            optionsDevice.put("remote","/asibot/asibotManipulator");
             optionsDevice.put("local","/webLocal");
             simDevice.open(optionsDevice);
             bool ok = true;        
