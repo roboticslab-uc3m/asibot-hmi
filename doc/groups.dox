@@ -1,0 +1,33 @@
+
+/**
+@brief The main, catch-all namespace for TEO.
+ */
+namespace teo {}
+
+/**
+ * \defgroup asibot-hmi_libraries asibot-hmi Libraries
+ *
+ * @brief asibot-hmi libraries.
+ *
+ */
+
+/**
+ * \defgroup asibot-hmi_programs asibot-hmi Programs
+ *
+ * @brief asibot-hmi programs.
+ */
+
+/**
+ * \defgroup asibot-hmi_applications asibot-hmi Applications (Collections of Programs)
+ *
+ * @brief asibot-hmi applications (collections of programs).
+ */
+
+/**
+ * \defgroup asibot-hmi_examples asibot-hmi Examples
+ *
+ * @brief asibot-hmi examples.
+ */
+
+
+
