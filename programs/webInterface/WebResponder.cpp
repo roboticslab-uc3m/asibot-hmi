@@ -24,16 +24,8 @@ bool roboticslab::WebResponder::closeDevices()
         realDevice.close();
     if(simDevice.isValid())
         simDevice.close();
-    if(simCart) {
-        simCart->close();
-        delete simCart;
-        simCart = 0;
-    }
-    if(realCart) {
-        simCart->close();
-        delete simCart;
-        simCart = 0;
-    }
+    if(cartesianClientDevice.isValid())
+        cartesianClientDevice.close();
     return true;
 }
 
@@ -579,20 +571,18 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         if (simConnected){
             printf("Disconnecting from robot simulator.\n");
             simDevice.close();
+            cartesianClientDevice.close();
             simConnected = false;
             simPos = 0;
-            simCart->close();
-            delete simCart;
-            simCart=0;
             // Maybe perform some checks here
             outParam = "SIMOFF";
         } else {
             printf("Connecting to robot simulator.\n");
-            Property options;
-            options.put("device","remote_controlboard");
-            options.put("remote","/ravebot");
-            options.put("local","/webLocal");
-            simDevice.open(options);
+            Property optionsDevice;
+            optionsDevice.put("device","remote_controlboard");
+            optionsDevice.put("remote","/ravebot");
+            optionsDevice.put("local","/webLocal");
+            simDevice.open(optionsDevice);
             bool ok = true;        
             if(!simDevice.isValid()) {
                 printf("[error] ravebot device not available.\n");
@@ -602,20 +592,25 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
                 printf("[error] ravebot simPos not available.\n");
                 ok = false;
             } else printf ("[success] ravebot simPos available.\n");
-            simCart = new CartesianClient;
-            if(!simCart->open("/ravebot")) {
-                printf("[error] cannot open ravebot simCart.\n");
-                ok=false;
-            } else printf ("[success] opened ravebot simCart.\n");
+            printf("Connecting to cartesian client.\n");
+            Property optionsCartesian;
+            optionsCartesian.put("device", "CartesianControlClient");
+            optionsCartesian.put("cartesianRemote", "/cartesianRemote");
+            optionsCartesian.put("cartesianLocal", "/cartesianLocal");
+            cartesianClientDevice.open(optionsCartesian);
+            if(!cartesianClientDevice.isValid()) {
+                printf("[error] cartesianClientDevice/ravebot device not available.\n");
+                ok = false;
+            } else printf ("[success] cartesianClientDevice/ravebot device available.\n");
+            if(!cartesianClientDevice.view(simCart)) {
+                printf("[error] cartesianClientDevice/ravebot simCart not available.\n");
+                ok = false;
+            } else printf ("[success] cartesianClientDevice/ravebot simCart available.\n");
             if(!ok) {
                 simDevice.close();
+                cartesianClientDevice.close();
                 simConnected = false;
                 simPos = 0;
-                if(simCart) {
-                    simCart->close();
-                    delete simCart;
-                    simCart = 0;
-                }
                 outParam = "SIMOFF";
             } else {
                 simConnected = true;
@@ -706,9 +701,10 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         ConstString theAxis = request.find("axis").asString();
         ConstString inMovement = request.find("movement").asString();
         printf("Going to move axis [%s] towards the [%s].\n", theAxis.c_str(), inMovement.c_str());
-        double cartCoords[5];
-        if(simCart) simCart->stat(cartCoords);
-        if(realCart) simCart->stat(cartCoords); // REAL OVERWRITES COORDS
+        std::vector<double> cartCoords;
+        int state;
+        if(simCart) simCart->stat(state, cartCoords);
+        if(realCart) simCart->stat(state, cartCoords); // REAL OVERWRITES COORDS
         printf("At: %f %f %f %f %f\n",cartCoords[0],cartCoords[1],cartCoords[2],cartCoords[3],cartCoords[4]);
         if(inMovement == ConstString("right")) {
             printf("right movement...\n");
@@ -729,7 +725,7 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         if(realCart) realCart->movl(cartCoords);
         return response.write(*out);
     } else if (code=="cstop.0") {
-        if(simCart) simCart->stop();
+        if(simCart) simCart->stopControl();
         if(realCart) realPos->stop();
         return response.write(*out);
     } else if (code=="cartesian.2") {
@@ -740,7 +736,8 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         ConstString pz = request.find("pz").asString();
         ConstString oyP = request.find("oyP").asString();
         ConstString ozPP = request.find("ozPP").asString();
-        double targets[5];
+        std::vector<double> targets;
+        targets.resize(5);
         targets[0] = stringToDouble(px);
         targets[1] = stringToDouble(py);
         targets[2] = stringToDouble(pz);
@@ -756,9 +753,10 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
                 if(realCart) realCart->movl(targets);
             }
         } else if (origin == ConstString("rel_base")) {
-            double cartCoords[5];
-            if(simCart) simCart->stat(cartCoords);
-            if(realCart) simCart->stat(cartCoords); // REAL OVERWRITES COORDS
+            std::vector<double> cartCoords;
+            int state;
+            if(simCart) simCart->stat(state, cartCoords);
+            if(realCart) simCart->stat(state, cartCoords); // REAL OVERWRITES COORDS
             printf("At: %f %f %f %f %f\n",cartCoords[0],cartCoords[1],cartCoords[2],cartCoords[3],cartCoords[4]);
             cartCoords[0]+= targets[0];
             cartCoords[1]+= targets[1];
@@ -786,8 +784,12 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         response.addString(str.c_str());
         return response.write(*out);
     } else if (code=="capture.0") {
-        if(simCart) simCart->stat(captureX);
-        if(realCart) simCart->stat(captureX); // REAL OVERWRITES COORDS
+        std::vector<double> captureX;
+        int state;
+        if(simCart) simCart->stat(state, captureX);
+        if(realCart) simCart->stat(state, captureX); // REAL OVERWRITES COORDS
+        for (int i = 0; i < captureX.size(); i++)
+            this->captureX[i] = captureX[i];
         printf("At: %f %f %f %f %f\n",captureX[0],captureX[1],captureX[2],captureX[3],captureX[4]);
         ConstString coords("x=");
         coords += doubleToString(captureX[0]) + " y=";

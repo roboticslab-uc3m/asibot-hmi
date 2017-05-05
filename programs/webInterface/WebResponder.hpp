@@ -8,10 +8,11 @@
 #include <yarp/dev/PolyDriver.h>
 #include <yarp/dev/ControlBoardInterfaces.h>
 
-#include "CartesianClient.h"
+#include <ICartesianControl.h>
 
 #include <fstream>
 #include <sstream>
+#include <vector>
 
 #ifdef WIN32
 #include <windows.h>
@@ -79,12 +80,14 @@ protected:
     yarp::dev::PolyDriver simDevice;
     yarp::dev::IPositionControl *simPos;
     yarp::dev::IControlMode *simMode;
-    CartesianClient *simCart;  // != ICartesianControl
+    teo::ICartesianControl *simCart;
 
     yarp::dev::PolyDriver realDevice;
     yarp::dev::IPositionControl *realPos;
     yarp::dev::IControlMode *realMode;
-    CartesianClient *realCart;  // != ICartesianControl
+    teo::ICartesianControl *realCart;
+
+    yarp::dev::PolyDriver cartesianClientDevice;
 
     double captureX[NUM_CART_COORDS];
     yarp::os::ConstString lastEditName;
