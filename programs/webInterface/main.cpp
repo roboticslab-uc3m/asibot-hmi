@@ -2,7 +2,7 @@
 
 /**
  *
- * @ingroup asibot_modules
+ * @ingroup asibot-hmi_programs
  * \defgroup webInterface webInterface
  *
  * @brief Creates an instance of the WebInterface class. Calls are handled by the WebResponder class.
@@ -22,8 +22,8 @@
  *
  * <b>Installation</b>
  *
- * The module is compiled when ENABLE_webInterface is activated (default: OFF). For further
- * installation steps refer to <a class="el" href="pages.html">your own system installation guidelines</a>.
+ * The module is compiled when ENABLE_webInterface is activated. For further installation steps refer to
+ * <a class="el" href="pages.html">your own system installation guidelines</a>.
  *
  * <b>Running</b> (assuming correct installation)
  *
@@ -33,7 +33,7 @@
 \endverbatim
  * And then launch the actual module:
 \verbatim
-[on terminal 2] $ASIBOT_DIR/bin/webInterface
+[on terminal 2] $ASIBOT_HMI_DIR/bin/webInterface
 \endverbatim
  * And should get some kind of feedback. The last line should be something like:
 \verbatim
@@ -46,10 +46,9 @@ Server running, visit: http://127.0.0.1:8080/index
 [on terminal 3] firefox http://127.0.0.1:8080/index &
 \endverbatim
  *
- * <b>Modify</b>
+ * <hr>
 
- * This file can be edited at 
- * src/modules/webInterface/main.cpp
+ * This file can be edited at src/programs/webInterface/main.cpp
  *
  */
 
@@ -80,7 +79,7 @@ int main(int argc, char *argv[]) {
     fflush(stdout);
     Network yarp;
     if (!yarp.checkNetwork()) {
-        printf("[fail]\nwebInterface found no yarp network (try running \"yarpserver &\"), bye!\n");
+        fprintf(stderr, "[fail]\nwebInterface found no yarp network (try running \"yarpserver &\"), bye!\n");
         return -1;
     } else printf("[ok]\n");
 
