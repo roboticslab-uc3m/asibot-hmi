@@ -28,9 +28,11 @@
 *.out
 *.app
 
-# IDE-specific files
-.project
-.cproject
-
-# Misc
+# CMake
+CMakeLists.txt.user
 **/build*/
+/.project
+/.cproject
+
+# Other
+/external/
