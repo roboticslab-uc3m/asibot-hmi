@@ -10,7 +10,7 @@
 #include <yarp/os/BufferedPort.h>
 #include <yarp/os/Contact.h>
 
-#include "WebResponder.h"
+#include "WebResponder.hpp"
 
 #define DEFAULT_PERIOD 5   // [s]
 #define DEFAULT_RESOURCES "robots.uc3m.es/webInterface/html"

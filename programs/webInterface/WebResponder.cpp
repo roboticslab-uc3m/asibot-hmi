@@ -1,6 +1,6 @@
 // -*- mode:C++; tab-width:4; c-basic-offset:4; indent-tabs-mode:nil -*-
 
-#include "WebResponder.h"
+#include "WebResponder.hpp"
 
 /************************************************************************/
 bool WebResponder::init() {

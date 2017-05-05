@@ -2,14 +2,11 @@
 option(ENABLE_ExampleLibrary "Choose if you want to compile ExampleLibrary" TRUE)
 
 ### options: cpp programs
-option(ENABLE_exampleProgram "Choose if you want to compile exampleProgram" TRUE)
-
-### options: force default
-option(ENABLE_exampleExtraOption "Enable/disable option exampleExtraOption" TRUE)
+option(ENABLE_webInterface "Choose if you want to compile webInterface" TRUE)
 
 # Register features.
 add_feature_info(ExampleLibrary ENABLE_ExampleLibrary "Fancy example library.")
-add_feature_info(exampleProgram ENABLE_exampleProgram "Fancy example program.")
+add_feature_info(webInterface ENABLE_webInterface "ASIBOT web interface.")
 
 # Let the user specify a configuration (only single-config generators).
 if(NOT CMAKE_CONFIGURATION_TYPES)
