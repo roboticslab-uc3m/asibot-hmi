@@ -8,6 +8,8 @@ compiler:
   - clang
 
 before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y libace-dev
   - '[[ "$TRAVIS_EVENT_TYPE" = cron ]] && export YARP_CHECKOUT=devel || export YARP_CHECKOUT=master'
 
 install:
@@ -15,7 +17,7 @@ install:
   - cd
   - git clone --depth=1 --branch=$YARP_CHECKOUT https://github.com/robotology/yarp
   - mkdir -p yarp/build && cd "$_"
-  - cmake .. -DSKIP_ACE:BOOL=ON
+  - cmake ..
   - sudo make -j2 install
 
   # Clone and configure ROBOTICSLAB_KINEMATICS_DYNAMICS
