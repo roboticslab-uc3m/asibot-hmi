@@ -37,14 +37,14 @@ bool roboticslab::WebResponder::setResourceFinder(ResourceFinder &rf)
 }
 
 /************************************************************************/
-bool roboticslab::WebResponder::setUserPath(const ConstString& _userPath)
+bool roboticslab::WebResponder::setUserPath(const std::string& _userPath)
 {
     userPath = _userPath;
     return true;
 }
 
 /************************************************************************/
-bool roboticslab::WebResponder::setResourcePath(const ConstString& _resourcePath)
+bool roboticslab::WebResponder::setResourcePath(const std::string& _resourcePath)
 {
     resourcePath = _resourcePath;
     return true;
@@ -64,14 +64,14 @@ std::string& roboticslab::WebResponder::replaceAll(string& context, const string
 }
 
 /************************************************************************/
-std::string roboticslab::WebResponder::readHtml(const ConstString& fileName)
+std::string roboticslab::WebResponder::readHtml(const std::string& fileName)
 {
-    ConstString filePath = rf.findFileByName("html/"+fileName);
+    std::string filePath = rf.findFileByName("html/"+fileName);
     return readFile(filePath);
 }
 
 /************************************************************************/
-std::string roboticslab::WebResponder::readFile(const ConstString& filePath)
+std::string roboticslab::WebResponder::readFile(const std::string& filePath)
 {
     printf("filePath: %s\n",filePath.c_str());
     // thank you Tyler McHenry @ nerdland.net and KeithB @ ndssl.vbi.vt.edu for this algorithm
@@ -88,7 +88,7 @@ std::string roboticslab::WebResponder::readFile(const ConstString& filePath)
     str.assign((std::istreambuf_iterator<char>(t)),
                 std::istreambuf_iterator<char>());
     t.close();
-    ConstString resourceURL = resourcePath + "fig/";
+    std::string resourceURL = resourcePath + "fig/";
     replaceAll(str, "fig/", resourceURL.c_str());
     if(simConnected) replaceAll(str, "simInit.jpg", "simCon.jpg");
     else replaceAll(str, "simInit.jpg", "simDis.jpg");
@@ -98,9 +98,9 @@ std::string roboticslab::WebResponder::readFile(const ConstString& filePath)
 }
 
 /************************************************************************/
-bool roboticslab::WebResponder::appendToFile(const ConstString& fileName, const ConstString& inString)
+bool roboticslab::WebResponder::appendToFile(const std::string& fileName, const std::string& inString)
 {
-    ConstString filePath = userPath + fileName;
+    std::string filePath = userPath + fileName;
     printf("saving: %s\n",inString.c_str());
     printf("to file: %s\n",filePath.c_str());
     std::ofstream t(filePath.c_str(), std::ios::app);
@@ -110,9 +110,9 @@ bool roboticslab::WebResponder::appendToFile(const ConstString& fileName, const 
 }
 
 /************************************************************************/
-bool roboticslab::WebResponder::rewriteFile(const ConstString& fileName, const ConstString& inString)
+bool roboticslab::WebResponder::rewriteFile(const std::string& fileName, const std::string& inString)
 {
-    ConstString filePath = userPath + fileName;
+    std::string filePath = userPath + fileName;
     printf("rewriting: %s\n",inString.c_str());
     printf("to file: %s\n",filePath.c_str());
     std::ofstream t(filePath.c_str());
@@ -122,7 +122,7 @@ bool roboticslab::WebResponder::rewriteFile(const ConstString& fileName, const C
 }
 
 /************************************************************************/
-bool roboticslab::WebResponder::deleteFile(const ConstString& absFile)
+bool roboticslab::WebResponder::deleteFile(const std::string& absFile)
 {
     if (remove(absFile.c_str()) != 0 ) {
         printf("[error] could not delete file");
@@ -132,7 +132,7 @@ bool roboticslab::WebResponder::deleteFile(const ConstString& absFile)
 }
 
 /************************************************************************/
-int roboticslab::WebResponder::stringToInt(const ConstString& inString)
+int roboticslab::WebResponder::stringToInt(const std::string& inString)
 {
     int outInt;
     std::istringstream buffer(inString.c_str());
@@ -142,7 +142,7 @@ int roboticslab::WebResponder::stringToInt(const ConstString& inString)
 }
 
 /************************************************************************/
-double roboticslab::WebResponder::stringToDouble(const ConstString& inString)
+double roboticslab::WebResponder::stringToDouble(const std::string& inString)
 {
     double outDouble;
     std::istringstream buffer(inString.c_str());
@@ -152,24 +152,24 @@ double roboticslab::WebResponder::stringToDouble(const ConstString& inString)
 }
 
 /************************************************************************/
-yarp::os::ConstString roboticslab::WebResponder::doubleToString(const double& inDouble)
+std::string roboticslab::WebResponder::doubleToString(const double& inDouble)
 {
     // [thank you Adam Rosenfield] http://stackoverflow.com/questions/1123201/convert-double-to-string-c
     std::ostringstream s;
     s << inDouble;
-    return ConstString(s.str().c_str());
+    return std::string(s.str().c_str());
 }
 
 /************************************************************************/
-yarp::os::ConstString roboticslab::WebResponder::intToString(const int& inInt)
+std::string roboticslab::WebResponder::intToString(const int& inInt)
 {
     std::ostringstream s;
     s << inInt;
-    return ConstString(s.str().c_str());
+    return std::string(s.str().c_str());
 }
 
 /************************************************************************/
-yarp::os::ConstString roboticslab::WebResponder::pipedExec(const ConstString& cmd)
+std::string roboticslab::WebResponder::pipedExec(const std::string& cmd)
 {
     // http://stackoverflow.com/a/478960
     const int bufferSize = 128;
@@ -200,9 +200,9 @@ yarp::os::ConstString roboticslab::WebResponder::pipedExec(const ConstString& cm
 }
 
 /************************************************************************/
-yarp::os::ConstString roboticslab::WebResponder::pointButtonCreator(const ConstString& pointsFile)
+std::string roboticslab::WebResponder::pointButtonCreator(const std::string& pointsFile)
 {
-    ConstString ret;
+    std::string ret;
     printf("Reading points from file: %s\n",pointsFile.c_str());
     std::ifstream ifs(pointsFile.c_str());
     if (!ifs.is_open()) {
@@ -216,10 +216,10 @@ yarp::os::ConstString roboticslab::WebResponder::pointButtonCreator(const ConstS
         printf("line: %s.\n",line.c_str());
         int npos=0;
         int lpos=0;
-        ConstString pointName;
-        ConstString values;
+        std::string pointName;
+        std::string values;
         while ((npos = (int)line.find(' ', lpos)) != string::npos) {
-            ConstString subs(line.substr(lpos, npos - lpos).c_str());
+            std::string subs(line.substr(lpos, npos - lpos).c_str());
             if (lpos==0) pointName = subs;
             else {
                 values += subs;
@@ -231,7 +231,7 @@ yarp::os::ConstString roboticslab::WebResponder::pointButtonCreator(const ConstS
         ret += "<button onClick=\"pointToText('";
         ret += pointName.c_str();
         ret += "','";
-        ConstString tvalues = values.substr(0,values.length()-1);
+        std::string tvalues = values.substr(0,values.length()-1);
         ret += tvalues.c_str();
         ret += "');\">";
         ret += pointName.c_str();
@@ -242,9 +242,9 @@ yarp::os::ConstString roboticslab::WebResponder::pointButtonCreator(const ConstS
 }
 
 /************************************************************************/
-yarp::os::ConstString roboticslab::WebResponder::wordOptionCreator(const ConstString& wordsFile)
+std::string roboticslab::WebResponder::wordOptionCreator(const std::string& wordsFile)
 {
-    ConstString ret;
+    std::string ret;
     printf("Reading words from file: %s\n",wordsFile.c_str());
     std::ifstream ifs(wordsFile.c_str());
     if (!ifs.is_open()) {
@@ -258,10 +258,10 @@ yarp::os::ConstString roboticslab::WebResponder::wordOptionCreator(const ConstSt
         printf("line: %s.\n",line.c_str());
         int npos=0;
         int lpos=0;
-        ConstString pointName;
-        ConstString values;
+        std::string pointName;
+        std::string values;
         while ((npos = (int)line.find(' ', lpos)) != string::npos) {
-            ConstString subs(line.substr(lpos, npos - lpos).c_str());
+            std::string subs(line.substr(lpos, npos - lpos).c_str());
             if (lpos==0) pointName = subs;
             else {
                 values += subs;
@@ -279,9 +279,9 @@ yarp::os::ConstString roboticslab::WebResponder::wordOptionCreator(const ConstSt
 }
 
 #ifdef WIN32
-yarp::os::ConstString roboticslab::WebResponder::fileListCreator() {
-    ConstString ret;
-    ConstString filePath = userPath.substr(0, filePath.size() - 1) + "\\*";
+std::string roboticslab::WebResponder::fileListCreator() {
+    std::string ret;
+    std::string filePath = userPath.substr(0, filePath.size() - 1) + "\\*";
     printf("Reading files from: %s\n", filePath.c_str());
     HANDLE hFind;
     WIN32_FIND_DATA ffd;
@@ -303,9 +303,9 @@ yarp::os::ConstString roboticslab::WebResponder::fileListCreator() {
 }
 
 /************************************************************************/
-yarp::os::ConstString roboticslab::WebResponder::taskListCreator() {
-    ConstString ret;
-    ConstString filePath = userPath.substr(0, filePath.size() - 1) + "\\*";
+std::string roboticslab::WebResponder::taskListCreator() {
+    std::string ret;
+    std::string filePath = userPath.substr(0, filePath.size() - 1) + "\\*";
     printf("Reading files from: %s\n", filePath.c_str());
     HANDLE hFind;
     WIN32_FIND_DATA ffd;
@@ -327,9 +327,9 @@ yarp::os::ConstString roboticslab::WebResponder::taskListCreator() {
 }
 
 /************************************************************************/
-yarp::os::ConstString roboticslab::WebResponder::taskButtonCreator() {
-    ConstString ret;
-    ConstString filePath = userPath.substr(0, filePath.size() - 1) + "\\*";
+std::string roboticslab::WebResponder::taskButtonCreator() {
+    std::string ret;
+    std::string filePath = userPath.substr(0, filePath.size() - 1) + "\\*";
     printf("Reading files from: %s\n", filePath.c_str());
     HANDLE hFind;
     WIN32_FIND_DATA ffd;
@@ -339,7 +339,7 @@ yarp::os::ConstString roboticslab::WebResponder::taskButtonCreator() {
             int taskCount = 0;
             if ((int)fileName.find(".task", 0) != string::npos) {
                 printf("[%s] was task, contents...\n", fileName.c_str());
-                ConstString taskPath(userPath);
+                std::string taskPath(userPath);
                 taskPath += fileName.c_str();
                 std::ifstream ifs(taskPath.c_str());
                 if (!ifs.is_open()) {
@@ -383,10 +383,10 @@ yarp::os::ConstString roboticslab::WebResponder::taskButtonCreator() {
 #else
 
 /************************************************************************/
-yarp::os::ConstString roboticslab::WebResponder::fileListCreator()
+std::string roboticslab::WebResponder::fileListCreator()
 {
-    ConstString ret;
-    ConstString filePath = userPath;
+    std::string ret;
+    std::string filePath = userPath;
     printf("Reading files from: %s\n",filePath.c_str());
     DIR *dp;
     struct dirent *ep;
@@ -408,10 +408,10 @@ yarp::os::ConstString roboticslab::WebResponder::fileListCreator()
 }
 
 /************************************************************************/
-yarp::os::ConstString roboticslab::WebResponder::taskListCreator()
+std::string roboticslab::WebResponder::taskListCreator()
 {
-    ConstString ret;
-    ConstString filePath = userPath;
+    std::string ret;
+    std::string filePath = userPath;
     printf("Reading files from: %s\n",filePath.c_str());
     DIR *dp;
     struct dirent *ep;
@@ -433,10 +433,10 @@ yarp::os::ConstString roboticslab::WebResponder::taskListCreator()
 }
 
 /************************************************************************/
-yarp::os::ConstString roboticslab::WebResponder::taskButtonCreator()
+std::string roboticslab::WebResponder::taskButtonCreator()
 {
-    ConstString ret;
-    ConstString filePath = userPath;
+    std::string ret;
+    std::string filePath = userPath;
     printf("Reading files from: %s\n",filePath.c_str());
     DIR *dp;
     struct dirent *ep;
@@ -447,7 +447,7 @@ yarp::os::ConstString roboticslab::WebResponder::taskButtonCreator()
             int taskCount = 0;
             if((int)fileName.find(".task", 0) != string::npos) {
                 printf("[%s] was task, contents...\n",fileName.c_str());
-                ConstString taskPath(userPath);
+                std::string taskPath(userPath);
                 taskPath += fileName.c_str();
                 std::ifstream ifs(taskPath.c_str());
                 if (!ifs.is_open()) {
@@ -490,9 +490,9 @@ yarp::os::ConstString roboticslab::WebResponder::taskButtonCreator()
 #endif
 
 /************************************************************************/
-yarp::os::ConstString roboticslab::WebResponder::getCss()
+std::string roboticslab::WebResponder::getCss()
 {
-    return ConstString(readHtml("style.css").c_str());
+    return std::string(readHtml("style.css").c_str());
 }
 
 /************************************************************************/
@@ -505,7 +505,7 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
     if (out==NULL) return true;
     response.addString("web");
 
-    ConstString code = request.get(0).asString();
+    std::string code = request.get(0).asString();
     if (code=="style.css") {
         response.addString(getCss());
         response.addString("mime");
@@ -521,14 +521,14 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         response.addString(readHtml("testEqual.html").c_str());
         return response.write(*out);
     } else if (code=="equal.1") {
-        ConstString inParam = request.find("a").asString();
+        std::string inParam = request.find("a").asString();
         printf("Got an %s, going to equal it.\n",inParam.c_str());
         response.addString(inParam);
         return response.write(*out);
     } else if (code=="connectReal.1") {
-        ConstString inParam = request.find("real").asString();
+        std::string inParam = request.find("real").asString();
         printf("Got %s. ",inParam.c_str());
-        ConstString outParam;
+        std::string outParam;
         if (realConnected){
             printf("Disconnecting from real robot.\n");
             realDevice.close();
@@ -565,9 +565,9 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         response.addString(outParam);
         return response.write(*out);
     } else if (code=="connectSim.1") {
-        ConstString inParam = request.find("sim").asString();
+        std::string inParam = request.find("sim").asString();
         printf("Got %s. ",inParam.c_str());
-        ConstString outParam;
+        std::string outParam;
         if (simConnected){
             printf("Disconnecting from robot simulator.\n");
             simDevice.close();
@@ -625,7 +625,7 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
     } else if (code=="joint") {
         string str = readHtml("joint.html");
         //TCbegin
-        ConstString taskcreator = request.find("taskcreator").asString();
+        std::string taskcreator = request.find("taskcreator").asString();
         if(taskcreator=="on"){
             replaceAll(str, "<JOPTS>", "<script src='jTaskTab.js' type='text/javascript'></script>");
         }
@@ -633,32 +633,32 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         response.addString(str.c_str());
         return response.write(*out);
     } else if (code=="joint.1") {
-        ConstString theJoint = request.find("joint").asString();
+        std::string theJoint = request.find("joint").asString();
         int inJoint = stringToInt(theJoint);
-        ConstString inMovement = request.find("movement").asString();
+        std::string inMovement = request.find("movement").asString();
         printf("Going to move joint [%d] towards the [%s].\n", inJoint, inMovement.c_str());
         if(simPos) {
             int ax;
             simPos->getAxes(&ax);
             for (int i=0;i<ax;i++) simMode->setPositionMode(i);
         }
-        if((simPos)&&(inMovement == ConstString("right"))) simPos->relativeMove(inJoint-1,JOYPAD_RELMOVE);
-        if((simPos)&&(inMovement == ConstString("left"))) simPos->relativeMove(inJoint-1,-JOYPAD_RELMOVE);
+        if((simPos)&&(inMovement == std::string("right"))) simPos->relativeMove(inJoint-1,JOYPAD_RELMOVE);
+        if((simPos)&&(inMovement == std::string("left"))) simPos->relativeMove(inJoint-1,-JOYPAD_RELMOVE);
         if(realPos) {
             int ax;
             realPos->getAxes(&ax);
             for (int i=0;i<ax;i++) realMode->setPositionMode(i);
         }
-        if((realPos)&&(inMovement == ConstString("right"))) realPos->relativeMove(inJoint-1,JOYPAD_RELMOVE);
-        if((realPos)&&(inMovement == ConstString("left"))) realPos->relativeMove(inJoint-1,-JOYPAD_RELMOVE);
+        if((realPos)&&(inMovement == std::string("right"))) realPos->relativeMove(inJoint-1,JOYPAD_RELMOVE);
+        if((realPos)&&(inMovement == std::string("left"))) realPos->relativeMove(inJoint-1,-JOYPAD_RELMOVE);
         return response.write(*out);
     } else if (code=="joint.2") {
-        ConstString inMovement = request.find("movement").asString();
-        ConstString q1 = request.find("one").asString();
-        ConstString q2 = request.find("two").asString();
-        ConstString q3 = request.find("three").asString();
-        ConstString q4 = request.find("four").asString();
-        ConstString q5 = request.find("five").asString();
+        std::string inMovement = request.find("movement").asString();
+        std::string q1 = request.find("one").asString();
+        std::string q2 = request.find("two").asString();
+        std::string q3 = request.find("three").asString();
+        std::string q4 = request.find("four").asString();
+        std::string q5 = request.find("five").asString();
         double targets[5];
         targets[0] = stringToDouble(q1);
         targets[1] = stringToDouble(q2);
@@ -672,16 +672,16 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
             for (int i=0;i<ax;i++)
                 simMode->setPositionMode(i);
         }
-        if((simPos)&&(inMovement == ConstString("absolute"))) simPos->positionMove(targets);
-        if((simPos)&&(inMovement == ConstString("relative"))) simPos->relativeMove(targets);
+        if((simPos)&&(inMovement == std::string("absolute"))) simPos->positionMove(targets);
+        if((simPos)&&(inMovement == std::string("relative"))) simPos->relativeMove(targets);
         if(realPos) {
             int ax;
             realPos->getAxes(&ax);
             for (int i=0;i<ax;i++)
                 realMode->setPositionMode(i);
         }
-        if((realPos)&&(inMovement == ConstString("absolute"))) realPos->positionMove(targets);
-        if((realPos)&&(inMovement == ConstString("relative"))) realPos->relativeMove(targets);
+        if((realPos)&&(inMovement == std::string("absolute"))) realPos->positionMove(targets);
+        if((realPos)&&(inMovement == std::string("relative"))) realPos->relativeMove(targets);
         return response.write(*out);
     } else if (code=="stop.0") {
         if(simPos) simPos->stop();
@@ -690,7 +690,7 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
     } else if (code=="cartesian") {
         string str = readHtml("cartesian.html");
         //TCbegin
-        ConstString taskcreator = request.find("taskcreator").asString();
+        std::string taskcreator = request.find("taskcreator").asString();
         if(taskcreator=="on"){
             replaceAll(str, "<COPTS>", "<script src='cTaskTab.js' type='text/javascript'></script>");
         }
@@ -698,27 +698,27 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         response.addString(str.c_str());
         return response.write(*out);
     } else if (code=="cartesian.1") {
-        ConstString theAxis = request.find("axis").asString();
-        ConstString inMovement = request.find("movement").asString();
+        std::string theAxis = request.find("axis").asString();
+        std::string inMovement = request.find("movement").asString();
         printf("Going to move axis [%s] towards the [%s].\n", theAxis.c_str(), inMovement.c_str());
         std::vector<double> cartCoords;
         int state;
         if(simCart) simCart->stat(state, cartCoords);
         if(realCart) simCart->stat(state, cartCoords); // REAL OVERWRITES COORDS
         printf("At: %f %f %f %f %f\n",cartCoords[0],cartCoords[1],cartCoords[2],cartCoords[3],cartCoords[4]);
-        if(inMovement == ConstString("right")) {
+        if(inMovement == std::string("right")) {
             printf("right movement...\n");
-            if(theAxis == ConstString("px")) cartCoords[0]+= CJOYPAD_RELMOVE_POS;
-            if(theAxis == ConstString("py")) cartCoords[1]+= CJOYPAD_RELMOVE_POS;
-            if(theAxis == ConstString("pz")) cartCoords[2]+= CJOYPAD_RELMOVE_POS;
-            if(theAxis == ConstString("oyP")) cartCoords[3]+= CJOYPAD_RELMOVE_ORI;
-            if(theAxis == ConstString("ozPP")) cartCoords[4]+= CJOYPAD_RELMOVE_ORI;
-        } else if(inMovement == ConstString("left")) {
-            if(theAxis == ConstString("px")) cartCoords[0]-= CJOYPAD_RELMOVE_POS;
-            if(theAxis == ConstString("py")) cartCoords[1]-= CJOYPAD_RELMOVE_POS;
-            if(theAxis == ConstString("pz")) cartCoords[2]-= CJOYPAD_RELMOVE_POS;
-            if(theAxis == ConstString("oyP")) cartCoords[3]-= CJOYPAD_RELMOVE_ORI;
-            if(theAxis == ConstString("ozPP")) cartCoords[4]-= CJOYPAD_RELMOVE_ORI;
+            if(theAxis == std::string("px")) cartCoords[0]+= CJOYPAD_RELMOVE_POS;
+            if(theAxis == std::string("py")) cartCoords[1]+= CJOYPAD_RELMOVE_POS;
+            if(theAxis == std::string("pz")) cartCoords[2]+= CJOYPAD_RELMOVE_POS;
+            if(theAxis == std::string("oyP")) cartCoords[3]+= CJOYPAD_RELMOVE_ORI;
+            if(theAxis == std::string("ozPP")) cartCoords[4]+= CJOYPAD_RELMOVE_ORI;
+        } else if(inMovement == std::string("left")) {
+            if(theAxis == std::string("px")) cartCoords[0]-= CJOYPAD_RELMOVE_POS;
+            if(theAxis == std::string("py")) cartCoords[1]-= CJOYPAD_RELMOVE_POS;
+            if(theAxis == std::string("pz")) cartCoords[2]-= CJOYPAD_RELMOVE_POS;
+            if(theAxis == std::string("oyP")) cartCoords[3]-= CJOYPAD_RELMOVE_ORI;
+            if(theAxis == std::string("ozPP")) cartCoords[4]-= CJOYPAD_RELMOVE_ORI;
         }
         printf("To: %f %f %f %f %f\n",cartCoords[0],cartCoords[1],cartCoords[2],cartCoords[3],cartCoords[4]);
         if(simCart) simCart->movl(cartCoords);
@@ -729,13 +729,13 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         if(realCart) realPos->stop();
         return response.write(*out);
     } else if (code=="cartesian.2") {
-        ConstString origin = request.find("origin").asString();
-        ConstString movement = request.find("movement").asString();
-        ConstString px = request.find("px").asString();
-        ConstString py = request.find("py").asString();
-        ConstString pz = request.find("pz").asString();
-        ConstString oyP = request.find("oyP").asString();
-        ConstString ozPP = request.find("ozPP").asString();
+        std::string origin = request.find("origin").asString();
+        std::string movement = request.find("movement").asString();
+        std::string px = request.find("px").asString();
+        std::string py = request.find("py").asString();
+        std::string pz = request.find("pz").asString();
+        std::string oyP = request.find("oyP").asString();
+        std::string ozPP = request.find("ozPP").asString();
         std::vector<double> targets;
         targets.resize(5);
         targets[0] = stringToDouble(px);
@@ -744,15 +744,15 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         targets[3] = stringToDouble(oyP);
         targets[4] = stringToDouble(ozPP);
         printf("Going to move%s\n", origin.c_str());
-        if(origin == ConstString("abs_base")) {
-            if(movement == ConstString("movj")) {
+        if(origin == std::string("abs_base")) {
+            if(movement == std::string("movj")) {
                 if(simCart) simCart->movj(targets);
                 if(realCart) realCart->movj(targets);
-            }else if(movement == ConstString("movl")) {
+            }else if(movement == std::string("movl")) {
                 if(simCart) simCart->movl(targets);
                 if(realCart) realCart->movl(targets);
             }
-        } else if (origin == ConstString("rel_base")) {
+        } else if (origin == std::string("rel_base")) {
             std::vector<double> cartCoords;
             int state;
             if(simCart) simCart->stat(state, cartCoords);
@@ -764,19 +764,19 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
             cartCoords[3]+= targets[3];
             cartCoords[4]+= targets[4];
             printf("To: %f %f %f %f %f\n",cartCoords[0],cartCoords[1],cartCoords[2],cartCoords[3],cartCoords[4]);
-            if(movement == ConstString("movj")) {
+            if(movement == std::string("movj")) {
                 if(simCart) simCart->movj(cartCoords);
                 if(realCart) realCart->movj(cartCoords);
-            }else if(movement == ConstString("movl")) {
+            }else if(movement == std::string("movl")) {
                 if(simCart) simCart->movl(cartCoords);
                 if(realCart) realCart->movl(cartCoords);
             }
         }
         return response.write(*out);
     } else if (code=="video") {
-        ConstString camHost = Network::queryName("/ravebot/asibot_tip/img:o").getHost();
+        std::string camHost = Network::queryName("/ravebot/asibot_tip/img:o").getHost();
         int camPort = Network::queryName("/ravebot/asibot_tip/img:o").getPort();
-        ConstString camSocket = "http://";
+        std::string camSocket = "http://";
         camSocket += camHost + ":" + intToString(camPort) + "/?action";
         printf("\nCam running at: %s\n\n", camSocket.c_str());
         string str = readHtml("video.html");
@@ -791,7 +791,7 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         for (int i = 0; i < captureX.size(); i++)
             this->captureX[i] = captureX[i];
         printf("At: %f %f %f %f %f\n",captureX[0],captureX[1],captureX[2],captureX[3],captureX[4]);
-        ConstString coords("x=");
+        std::string coords("x=");
         coords += doubleToString(captureX[0]) + " y=";
         coords += doubleToString(captureX[1]) + " z=";
         coords += doubleToString(captureX[2]) + " rot(y')=";
@@ -801,9 +801,9 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         printf("Writing: %s\n",coords.c_str());
         return response.write(*out);
     } else if (code=="capture.1") {
-        ConstString pname = request.find("pname").asString();
+        std::string pname = request.find("pname").asString();
         printf("capture.1 saving capture.0 captures: %f %f %f %f %f\n",captureX[0],captureX[1],captureX[2],captureX[3],captureX[4]);
-        ConstString captureStr(pname);
+        std::string captureStr(pname);
         captureStr += " ";
         captureStr += doubleToString(captureX[0]) + " ";
         captureStr += doubleToString(captureX[1]) + " ";
@@ -817,7 +817,7 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         string str = readHtml("program.html");
 
         //TCbegin
-        ConstString taskcreator = request.find("taskcreator").asString();
+        std::string taskcreator = request.find("taskcreator").asString();
         if(taskcreator=="on"){
             replaceAll(str, "<POPTS>", "<script src='pTaskTab.js' type='text/javascript'></script>");
         }
@@ -825,31 +825,31 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
 
         replaceAll(str, "<FNAME>", lastEditName.c_str());
 
-        ConstString fileList = fileListCreator();
+        std::string fileList = fileListCreator();
         replaceAll(str, "<CARGARFICHEROS>", fileList.c_str());
 
-        ConstString pointsFile = userPath + "points.ini";
-        ConstString pointsButtons = pointButtonCreator(pointsFile);
+        std::string pointsFile = userPath + "points.ini";
+        std::string pointsButtons = pointButtonCreator(pointsFile);
         replaceAll(str, "<POINTS>", pointsButtons.c_str());
 
-        ConstString editFile = userPath + lastEditName + ".py";
+        std::string editFile = userPath + lastEditName + ".py";
         string contents = readFile(editFile);
         replaceAll(str, "<CENTRALPIECE>", contents.c_str());
 
         response.addString(str.c_str());
         return response.write(*out);
     } else if (code=="create.0") {
-        ConstString nfile = request.find("nfile").asString();
+        std::string nfile = request.find("nfile").asString();
         lastEditName = nfile;
         nfile += ".py";
-        ConstString templatePath = rf.findFileByName(string("user/") + "template.py");
+        std::string templatePath = rf.findFileByName(string("user/") + "template.py");
         string str = readFile(templatePath);
         appendToFile(nfile,str);
         printf("create.0 %s file.\n",nfile.c_str());
         response.addString(str);
         return response.write(*out);
     } else if (code=="delete.0") {
-        ConstString dfile = userPath;
+        std::string dfile = userPath;
         dfile += request.find("dfile").asString();
         response.addString(request.find("dfile").asString());
         dfile += ".py";
@@ -857,7 +857,7 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         printf("delete.0 %s file.\n",dfile.c_str());
         return response.write(*out);
     } else if (code=="delete.1") {
-        ConstString dfile = userPath;
+        std::string dfile = userPath;
         dfile += request.find("dfile").asString();
         response.addString(request.find("dfile").asString());
         dfile += ".task";
@@ -865,7 +865,7 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         printf("delete.0 %s file.\n",dfile.c_str());
         return response.write(*out);
     } else if (code=="edit.0") {
-        ConstString efile = userPath;
+        std::string efile = userPath;
         efile += request.find("efile").asString();
         efile += ".py";
         printf("edit.0 %s file.\n",efile.c_str());
@@ -874,7 +874,7 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         response.addString(str.c_str());
         return response.write(*out);
     } else if (code=="save.0") {
-        ConstString sfile = request.find("sfile").asString();
+        std::string sfile = request.find("sfile").asString();
         response.addString(request.find("sfile").asString());
         sfile += ".py";
         printf("save.0 %s file.\n",sfile.c_str());
@@ -885,18 +885,18 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         rewriteFile(sfile,lstr.c_str());
         return response.write(*out);
     } else if (code=="compile.0") {
-        ConstString program = request.find("program").asString();
+        std::string program = request.find("program").asString();
         printf("compile %s program.\n",program.c_str());
-        ConstString cmd("python -m py_compile ");
+        std::string cmd("python -m py_compile ");
         cmd += userPath + program + ".py";
         cmd += " 2>&1"; // redirect stderr to stdout (see py_compile module)
-        ConstString res = pipedExec(cmd);
+        std::string res = pipedExec(cmd);
         res == "" ? response.clear() : response.addString(res);
         return response.write(*out);
     } else if (code=="speech") {
         string str = readHtml("speech.html");
         //TCbegin
-        ConstString taskcreator = request.find("taskcreator").asString();
+        std::string taskcreator = request.find("taskcreator").asString();
         if(taskcreator=="on"){
             replaceAll(str, "<SOPTS>", "<script src='sTaskTab.js' type='text/javascript'></script>");
         }
@@ -904,14 +904,14 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         response.addString(str.c_str());
         return response.write(*out);
     } else if (code=="speech.0") {
-        ConstString word = request.find("word").asString();
+        std::string word = request.find("word").asString();
         appendToFile("words.ini",word);
         response.addString(word.c_str());
         return response.write(*out);
     } else if (code=="launcher") {
         string str = readHtml("launcher.html");
 
-        ConstString taskList = taskButtonCreator();
+        std::string taskList = taskButtonCreator();
         replaceAll(str, "<BOTONESTAREAS>", taskList.c_str());
 
         response.addString(str.c_str());
@@ -920,20 +920,20 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         string str = readHtml("assigner.html");
 
         //TCbegin
-        ConstString taskcreator = request.find("taskcreator").asString();
+        std::string taskcreator = request.find("taskcreator").asString();
         if(taskcreator=="on"){
             replaceAll(str, "<AOPTS>", "<script src='aTaskTab.js' type='text/javascript'></script>");
         }
         //TCend
 
-        ConstString fileList = fileListCreator();
+        std::string fileList = fileListCreator();
         replaceAll(str, "<CARGARFICHEROS>", fileList.c_str());
 
-        ConstString wordsFile = userPath + "words.ini";
-        ConstString wordOptions = wordOptionCreator(wordsFile);
+        std::string wordsFile = userPath + "words.ini";
+        std::string wordOptions = wordOptionCreator(wordsFile);
         replaceAll(str, "<WORDS>", wordOptions.c_str());
 
-        ConstString taskList = taskListCreator();
+        std::string taskList = taskListCreator();
         replaceAll(str, "<CARGARTAREAS>", taskList.c_str());
 
         response.addString(str.c_str());
@@ -957,25 +957,25 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         response.addString(readHtml("sTaskTab.js").c_str());
         return response.write(*out);
     } else if (code=="assigner.0") {
-        ConstString tname = request.find("tname").asString();
+        std::string tname = request.find("tname").asString();
         response.addString(tname);
         tname += ".task";
         printf("assign.0 %s file.\n",tname.c_str());
-        ConstString pfile = request.find("pfile").asString();
-        ConstString swords = request.find("swords").asString();
-        ConstString iname = request.find("iname").asString();
-        ConstString lstr(pfile);
+        std::string pfile = request.find("pfile").asString();
+        std::string swords = request.find("swords").asString();
+        std::string iname = request.find("iname").asString();
+        std::string lstr(pfile);
         lstr += "\n";
         lstr += swords + "\n";
         lstr += iname + "\n";
         rewriteFile(tname,lstr.c_str());
         return response.write(*out);
     } else if (code=="launch.0") {
-        ConstString program = request.find("program").asString();
+        std::string program = request.find("program").asString();
         printf("execute %s program.\n",program.c_str());
         response.addString(program.c_str());
-        ConstString programPath = userPath + program;
-        ConstString cmd("python ");
+        std::string programPath = userPath + program;
+        std::string cmd("python ");
         cmd += programPath;
         cmd += ".py";
         int i=system (cmd.c_str());
@@ -983,7 +983,7 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         return response.write(*out);
     }
 
-    ConstString prefix = "<html>\n<head>\n<title>YARP web test</title>\n";
+    std::string prefix = "<html>\n<head>\n<title>YARP web test</title>\n";
     prefix += "<link href=\"style.css\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\" />\n";
     prefix += "</head>\n<body>\n";
 
@@ -997,15 +997,15 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         return response.write(*out);
     }
 
-    ConstString postfix = "</body>\n</html>";
+    std::string postfix = "</body>\n</html>";
 
-    ConstString txt = prefix;
-    txt += ConstString("<h1>") + code + "</h1>\n";
+    std::string txt = prefix;
+    txt += std::string("<h1>") + code + "</h1>\n";
     txt += "<div>Is this working for you? <a href='/yes'>yes</a> <a href='/no'>no</a></div>\n";
     if (!request.check("day")) {
         txt += "<div>By the way, what day is it?</div>\n<form><input type='text' id='day' name='day' value='Sunday' /><input type='submit' value='tell me' /></form>\n";
     } else {
-        txt += ConstString("<div>So today is ") + request.find("day").asString() + ", is it? Hmm. I don't think I'm going to bother remembering that.</div>\n";
+        txt += std::string("<div>So today is ") + request.find("day").asString() + ", is it? Hmm. I don't think I'm going to bother remembering that.</div>\n";
     }
     txt += "<div><a href='/push'>How many counter counts?</a> (streaming example)</div>\n";
     txt += postfix;

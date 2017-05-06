@@ -9,8 +9,8 @@ roboticslab::WebInterface::WebInterface() { }
 bool roboticslab::WebInterface::configure(ResourceFinder &rf)
 {
     period = DEFAULT_PERIOD;  // double
-    ConstString resources = DEFAULT_RESOURCES;
-    ConstString webIp = DEFAULT_WEB_IP;
+    std::string resources = DEFAULT_RESOURCES;
+    std::string webIp = DEFAULT_WEB_IP;
     int webPort = DEFAULT_WEB_PORT;
     
     printf("--------------------------------------------------------------\n");
@@ -31,10 +31,10 @@ bool roboticslab::WebInterface::configure(ResourceFinder &rf)
     printf("WebInterface using webIp: %s, webPort: %d.\n",webIp.c_str(),webPort);
 
     responder.setResourceFinder(rf);
-    ConstString userPath = rf.getHomeContextPath() + "/";
+    std::string userPath = rf.getHomeContextPath() + "/";
     printf("WebInterface using userPath: %s\n",userPath.c_str());
     responder.setUserPath(userPath);
-    ConstString resourcePath = "http://";
+    std::string resourcePath = "http://";
     resourcePath += resources + "/";
     printf("WebInterface using resourcePath: %s\n",resourcePath.c_str());
     responder.setResourcePath(resourcePath);
@@ -47,7 +47,7 @@ bool roboticslab::WebInterface::configure(ResourceFinder &rf)
     responder.init();
     server.setReader(responder);
 
-    ConstString name = rf.check("name",Value("/web")).asString();
+    std::string name = rf.check("name",Value("/web")).asString();
 
     contact = Contact::byName(name);
     if (webPort!=0) {
@@ -69,7 +69,7 @@ bool roboticslab::WebInterface::updateModule()
     push.addString("web");
     std::ostringstream s;
     s << counter;
-    ConstString div = ConstString("<div>")+s.str()+" counter count</div>";
+    std::string div = std::string("<div>")+s.str()+" counter count</div>";
     push.addString(div);
     server.write(push);
     counter++;
