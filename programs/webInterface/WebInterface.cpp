@@ -6,7 +6,7 @@
 roboticslab::WebInterface::WebInterface() { }
 
 /************************************************************************/
-bool roboticslab::WebInterface::configure(ResourceFinder &rf)
+bool roboticslab::WebInterface::configure(yarp::os::ResourceFinder &rf)
 {
     period = DEFAULT_PERIOD;  // double
     std::string resources = DEFAULT_RESOURCES;
@@ -47,9 +47,9 @@ bool roboticslab::WebInterface::configure(ResourceFinder &rf)
     responder.init();
     server.setReader(responder);
 
-    std::string name = rf.check("name",Value("/web")).asString();
+    std::string name = rf.check("name",yarp::os::Value("/web")).asString();
 
-    contact = Contact::byName(name);
+    contact = yarp::os::Contact::byName(name);
     if (webPort!=0) {
         contact = contact.addSocket("",webIp,webPort);
     }
@@ -65,7 +65,7 @@ bool roboticslab::WebInterface::updateModule()
     printf("Server running, visit: http://%s:%d/index\n",
                    contact.getHost().c_str(),
                    contact.getPort());
-    Bottle push;
+    yarp::os::Bottle push;
     push.addString("web");
     std::ostringstream s;
     s << counter;

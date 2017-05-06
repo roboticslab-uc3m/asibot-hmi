@@ -30,7 +30,7 @@ bool roboticslab::WebResponder::closeDevices()
 }
 
 /************************************************************************/
-bool roboticslab::WebResponder::setResourceFinder(ResourceFinder &rf)
+bool roboticslab::WebResponder::setResourceFinder(yarp::os::ResourceFinder &rf)
 {
     this->rf = rf;
     return true;
@@ -51,12 +51,12 @@ bool roboticslab::WebResponder::setResourcePath(const std::string& _resourcePath
 }
 
 /************************************************************************/
-std::string& roboticslab::WebResponder::replaceAll(string& context, const string& from, const string& to)
+std::string& roboticslab::WebResponder::replaceAll(std::string& context, const std::string& from, const std::string& to)
 {
     // thank you Bruce Eckel for this one!! (TICPP-2nd-ed-Vol-two)
     size_t lookHere = 0;
     size_t foundHere;
-    while((foundHere = context.find(from, lookHere)) != string::npos) {
+    while((foundHere = context.find(from, lookHere)) != std::string::npos) {
         context.replace(foundHere, from.size(), to);
         lookHere = foundHere + to.size();
     }
@@ -210,7 +210,7 @@ std::string roboticslab::WebResponder::pointButtonCreator(const std::string& poi
         ret += "[No points captured yet]";
         return ret;
     }
-    string line;
+    std::string line;
     while (getline(ifs, line)) {
         line += ' ';  // add a comma for easier parsing
         printf("line: %s.\n",line.c_str());
@@ -218,7 +218,7 @@ std::string roboticslab::WebResponder::pointButtonCreator(const std::string& poi
         int lpos=0;
         std::string pointName;
         std::string values;
-        while ((npos = (int)line.find(' ', lpos)) != string::npos) {
+        while ((npos = (int)line.find(' ', lpos)) != std::string::npos) {
             std::string subs(line.substr(lpos, npos - lpos).c_str());
             if (lpos==0) pointName = subs;
             else {
@@ -252,7 +252,7 @@ std::string roboticslab::WebResponder::wordOptionCreator(const std::string& word
         ret += "[No words captured yet]";
         return ret;
     }
-    string line;
+    std::string line;
     while (getline(ifs, line)) {
         line += ' ';  // add a comma for easier parsing
         printf("line: %s.\n",line.c_str());
@@ -260,7 +260,7 @@ std::string roboticslab::WebResponder::wordOptionCreator(const std::string& word
         int lpos=0;
         std::string pointName;
         std::string values;
-        while ((npos = (int)line.find(' ', lpos)) != string::npos) {
+        while ((npos = (int)line.find(' ', lpos)) != std::string::npos) {
             std::string subs(line.substr(lpos, npos - lpos).c_str());
             if (lpos==0) pointName = subs;
             else {
@@ -287,7 +287,7 @@ std::string roboticslab::WebResponder::fileListCreator() {
     WIN32_FIND_DATA ffd;
     if ((hFind = FindFirstFile(filePath.c_str(), &ffd)) != INVALID_HANDLE_VALUE) {
         do {
-            string fileName(ffd.cFileName);
+            std::string fileName(ffd.cFileName);
             if (fileName.size() > 3 && (int)fileName.rfind(".py") == fileName.size() - 3) {
                 printf("[%s] was py\n", fileName.c_str());
                 ret += "<option>";
@@ -311,8 +311,8 @@ std::string roboticslab::WebResponder::taskListCreator() {
     WIN32_FIND_DATA ffd;
     if ((hFind = FindFirstFile(filePath.c_str(), &ffd)) != INVALID_HANDLE_VALUE) {
         do {
-            string fileName(ffd.cFileName);
-            if ((int)fileName.find(".task", 0) != string::npos) {
+            std::string fileName(ffd.cFileName);
+            if ((int)fileName.find(".task", 0) != std::string::npos) {
                 printf("[%s] was task\n", fileName.c_str());
                 ret += "<option>";
                 ret += fileName.substr(0, fileName.size() - 5).c_str();
@@ -335,9 +335,9 @@ std::string roboticslab::WebResponder::taskButtonCreator() {
     WIN32_FIND_DATA ffd;
     if ((hFind = FindFirstFile(filePath.c_str(), &ffd)) != INVALID_HANDLE_VALUE) {
         do {
-            string fileName(ffd.cFileName);
+            std::string fileName(ffd.cFileName);
             int taskCount = 0;
-            if ((int)fileName.find(".task", 0) != string::npos) {
+            if ((int)fileName.find(".task", 0) != std::string::npos) {
                 printf("[%s] was task, contents...\n", fileName.c_str());
                 std::string taskPath(userPath);
                 taskPath += fileName.c_str();
@@ -347,11 +347,11 @@ std::string roboticslab::WebResponder::taskButtonCreator() {
                     ret += "[error]";
                     return ret;
                 }
-                string line;
+                std::string line;
                 int lineCount = 0;
-                string strProgram;
-                string strSpeech;
-                string strIcon;
+                std::string strProgram;
+                std::string strSpeech;
+                std::string strIcon;
                 while (getline(ifs, line)) {
                     if (lineCount == 0) strProgram = line;
                     else if (lineCount == 1) strSpeech = line;
@@ -393,7 +393,7 @@ std::string roboticslab::WebResponder::fileListCreator()
     dp = opendir(filePath.c_str());
     if (dp != NULL) {
         while (ep = readdir (dp)) {
-            string fileName(ep->d_name);
+            std::string fileName(ep->d_name);
             if(fileName.size() > 3 && (int)fileName.rfind(".py") == fileName.size()-3) {
                 printf("[%s] was py\n",fileName.c_str());
                 ret += "<option>";
@@ -418,8 +418,8 @@ std::string roboticslab::WebResponder::taskListCreator()
     dp = opendir(filePath.c_str());
     if (dp != NULL) {
         while (ep = readdir (dp)) {
-            string fileName(ep->d_name);
-            if((int)fileName.find(".task", 0) != string::npos) {
+            std::string fileName(ep->d_name);
+            if((int)fileName.find(".task", 0) != std::string::npos) {
                 printf("[%s] was task\n",fileName.c_str());
                 ret += "<option>";
                 ret += fileName.substr(0, fileName.size()-5).c_str();
@@ -443,9 +443,9 @@ std::string roboticslab::WebResponder::taskButtonCreator()
     dp = opendir(filePath.c_str());
     if (dp != NULL) {
         while (ep = readdir (dp)) {
-            string fileName(ep->d_name);
+            std::string fileName(ep->d_name);
             int taskCount = 0;
-            if((int)fileName.find(".task", 0) != string::npos) {
+            if((int)fileName.find(".task", 0) != std::string::npos) {
                 printf("[%s] was task, contents...\n",fileName.c_str());
                 std::string taskPath(userPath);
                 taskPath += fileName.c_str();
@@ -455,11 +455,11 @@ std::string roboticslab::WebResponder::taskButtonCreator()
                     ret += "[error]";
                     return ret;
                 }
-                string line;
+                std::string line;
                 int lineCount = 0;
-                string strProgram;
-                string strSpeech;
-                string strIcon;
+                std::string strProgram;
+                std::string strSpeech;
+                std::string strIcon;
                 while (getline(ifs, line)) {
                     if (lineCount==0) strProgram = line;
                     else if (lineCount==1) strSpeech = line;
@@ -496,12 +496,12 @@ std::string roboticslab::WebResponder::getCss()
 }
 
 /************************************************************************/
-bool roboticslab::WebResponder::read(ConnectionReader& in)
+bool roboticslab::WebResponder::read(yarp::os::ConnectionReader& in)
 {
-    Bottle request, response;
+    yarp::os::Bottle request, response;
     if (!request.read(in)) return false;
     printf("Request: %s\n", request.toString().c_str());
-    ConnectionWriter *out = in.getWriter();
+    yarp::os::ConnectionWriter *out = in.getWriter();
     if (out==NULL) return true;
     response.addString("web");
 
@@ -538,7 +538,7 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
             outParam = "REALOFF";
         } else {
             printf("Connecting to real robot.\n");
-            Property options;
+            yarp::os::Property options;
             options.put("device","remote_controlboard");
             options.put("remote","/canbot");
             options.put("local","/webLocal");
@@ -578,7 +578,7 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
             outParam = "SIMOFF";
         } else {
             printf("Connecting to robot simulator.\n");
-            Property optionsDevice;
+            yarp::os::Property optionsDevice;
             optionsDevice.put("device","remote_controlboard");
             optionsDevice.put("remote","/asibot/asibotManipulator");
             optionsDevice.put("local","/webLocal");
@@ -593,7 +593,7 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
                 ok = false;
             } else printf ("[success] ravebot simPos available.\n");
             printf("Connecting to cartesian client.\n");
-            Property optionsCartesian;
+            yarp::os::Property optionsCartesian;
             optionsCartesian.put("device", "CartesianControlClient");
             optionsCartesian.put("cartesianRemote", "/cartesianRemote");
             optionsCartesian.put("cartesianLocal", "/cartesianLocal");
@@ -623,7 +623,7 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         response.addString(readHtml("index.html").c_str());
         return response.write(*out);
     } else if (code=="joint") {
-        string str = readHtml("joint.html");
+        std::string str = readHtml("joint.html");
         //TCbegin
         std::string taskcreator = request.find("taskcreator").asString();
         if(taskcreator=="on"){
@@ -688,7 +688,7 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         if(realPos) realPos->stop();
         return response.write(*out);
     } else if (code=="cartesian") {
-        string str = readHtml("cartesian.html");
+        std::string str = readHtml("cartesian.html");
         //TCbegin
         std::string taskcreator = request.find("taskcreator").asString();
         if(taskcreator=="on"){
@@ -774,12 +774,12 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         }
         return response.write(*out);
     } else if (code=="video") {
-        std::string camHost = Network::queryName("/ravebot/asibot_tip/img:o").getHost();
-        int camPort = Network::queryName("/ravebot/asibot_tip/img:o").getPort();
+        std::string camHost = yarp::os::Network::queryName("/ravebot/asibot_tip/img:o").getHost();
+        int camPort = yarp::os::Network::queryName("/ravebot/asibot_tip/img:o").getPort();
         std::string camSocket = "http://";
         camSocket += camHost + ":" + intToString(camPort) + "/?action";
         printf("\nCam running at: %s\n\n", camSocket.c_str());
-        string str = readHtml("video.html");
+        std::string str = readHtml("video.html");
         replaceAll(str, "<SIMCAMIP>", camSocket.c_str());
         response.addString(str.c_str());
         return response.write(*out);
@@ -814,7 +814,7 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         response.addString(pname);
         return response.write(*out);
     } else if (code=="program") {
-        string str = readHtml("program.html");
+        std::string str = readHtml("program.html");
 
         //TCbegin
         std::string taskcreator = request.find("taskcreator").asString();
@@ -833,7 +833,7 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         replaceAll(str, "<POINTS>", pointsButtons.c_str());
 
         std::string editFile = userPath + lastEditName + ".py";
-        string contents = readFile(editFile);
+        std::string contents = readFile(editFile);
         replaceAll(str, "<CENTRALPIECE>", contents.c_str());
 
         response.addString(str.c_str());
@@ -842,8 +842,8 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         std::string nfile = request.find("nfile").asString();
         lastEditName = nfile;
         nfile += ".py";
-        std::string templatePath = rf.findFileByName(string("user/") + "template.py");
-        string str = readFile(templatePath);
+        std::string templatePath = rf.findFileByName(std::string("user/") + "template.py");
+        std::string str = readFile(templatePath);
         appendToFile(nfile,str);
         printf("create.0 %s file.\n",nfile.c_str());
         response.addString(str);
@@ -869,7 +869,7 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         efile += request.find("efile").asString();
         efile += ".py";
         printf("edit.0 %s file.\n",efile.c_str());
-        string str = readFile(efile);
+        std::string str = readFile(efile);
         lastEditName = request.find("efile").asString();
         response.addString(str.c_str());
         return response.write(*out);
@@ -878,7 +878,7 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         response.addString(request.find("sfile").asString());
         sfile += ".py";
         printf("save.0 %s file.\n",sfile.c_str());
-        string lstr = request.find("lstr").asString().c_str();
+        std::string lstr = request.find("lstr").asString().c_str();
         replaceAll(lstr, "<br>", "\n");
         replaceAll(lstr, "<equal>", "=");
         replaceAll(lstr, "<numsign>", "#");
@@ -894,7 +894,7 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         res == "" ? response.clear() : response.addString(res);
         return response.write(*out);
     } else if (code=="speech") {
-        string str = readHtml("speech.html");
+        std::string str = readHtml("speech.html");
         //TCbegin
         std::string taskcreator = request.find("taskcreator").asString();
         if(taskcreator=="on"){
@@ -909,7 +909,7 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         response.addString(word.c_str());
         return response.write(*out);
     } else if (code=="launcher") {
-        string str = readHtml("launcher.html");
+        std::string str = readHtml("launcher.html");
 
         std::string taskList = taskButtonCreator();
         replaceAll(str, "<BOTONESTAREAS>", taskList.c_str());
@@ -917,7 +917,7 @@ bool roboticslab::WebResponder::read(ConnectionReader& in)
         response.addString(str.c_str());
         return response.write(*out);
     } else if (code=="assigner") {
-        string str = readHtml("assigner.html");
+        std::string str = readHtml("assigner.html");
 
         //TCbegin
         std::string taskcreator = request.find("taskcreator").asString();

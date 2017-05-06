@@ -30,9 +30,6 @@
 namespace roboticslab
 {
 
-using namespace yarp::os;  // FIXME
-using namespace std;  // FIXME
-
 /**
  *
  * @ingroup webInterface
