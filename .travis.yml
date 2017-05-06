@@ -14,7 +14,7 @@ install:
   # Clone and build YARP
   - cd
   - git clone --depth=1 --branch=$YARP_CHECKOUT https://github.com/robotology/yarp
-  - mkdir -p yarp/build && cd "&_"
+  - mkdir -p yarp/build && cd "$_"
   - cmake .. -DSKIP_ACE:BOOL=ON
   - sudo make -j2 install
 
