@@ -15,7 +15,7 @@ get_property(ASIBOT_HMI_INCLUDE_DIRS GLOBAL PROPERTY ASIBOT_HMI_INCLUDE_DIRS)
 get_property(ASIBOT_HMI_LIBRARIES GLOBAL PROPERTY ASIBOT_HMI_LIBRARIES)
 
 # Define include paths.
-include_directories(${YARP_INCLUDE_DIRS} ${ASIBOT_HMI_INCLUDE_DIRS})
+include_directories(${YARP_INCLUDE_DIRS} ${ASIBOT_HMI_INCLUDE_DIRS} ${ROBOTICSLAB_KINEMATICS_DYNAMICS_INCLUDE_DIRS})
 
 # Configure executable build target.
 add_executable(${KEYWORD} main.cpp WebInterface.cpp WebInterface.hpp WebResponder.cpp WebResponder.hpp)
