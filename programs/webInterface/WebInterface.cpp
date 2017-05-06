@@ -2,6 +2,13 @@
 
 #include "WebInterface.hpp"
 
+#include <cstdlib>
+#include <cstdio>
+#include <string>
+#include <sstream>
+#include <yarp/os/Value.h>
+#include <yarp/os/Bottle.h>
+
 /************************************************************************/
 roboticslab::WebInterface::WebInterface() { }
 
@@ -13,13 +20,13 @@ bool roboticslab::WebInterface::configure(yarp::os::ResourceFinder &rf)
     std::string webIp = DEFAULT_WEB_IP;
     int webPort = DEFAULT_WEB_PORT;
     
-    printf("--------------------------------------------------------------\n");
+    std::printf("--------------------------------------------------------------\n");
     if (rf.check("help")) {
-        printf("WebInterface Options:\n");
-        printf("\t--period [s] (default: \"%f\")\n",period);
-        printf("\t--resources (default: \"%s\")\n",resources.c_str());
-        printf("\t--webIp (default: \"%s\")\n",webIp.c_str());
-        printf("\t--webPort (default: \"%d\")\n",webPort);
+        std::printf("WebInterface Options:\n");
+        std::printf("\t--period [s] (default: \"%f\")\n",period);
+        std::printf("\t--resources (default: \"%s\")\n",resources.c_str());
+        std::printf("\t--webIp (default: \"%s\")\n",webIp.c_str());
+        std::printf("\t--webPort (default: \"%d\")\n",webPort);
     }
 
     counter = 0;
@@ -27,21 +34,21 @@ bool roboticslab::WebInterface::configure(yarp::os::ResourceFinder &rf)
     if(rf.check("resources")) resources = rf.find("resources").asString();
     if(rf.check("webIp")) webIp = rf.find("webIp").asString();
     if(rf.check("webPort")) webPort = rf.find("webPort").asInt();
-    printf("WebInterface using period: %f, resources: %s.\n", period,resources.c_str());
-    printf("WebInterface using webIp: %s, webPort: %d.\n",webIp.c_str(),webPort);
+    std::printf("WebInterface using period: %f, resources: %s.\n", period,resources.c_str());
+    std::printf("WebInterface using webIp: %s, webPort: %d.\n",webIp.c_str(),webPort);
 
     responder.setResourceFinder(rf);
     std::string userPath = rf.getHomeContextPath() + "/";
-    printf("WebInterface using userPath: %s\n",userPath.c_str());
+    std::printf("WebInterface using userPath: %s\n",userPath.c_str());
     responder.setUserPath(userPath);
     std::string resourcePath = "http://";
     resourcePath += resources + "/";
-    printf("WebInterface using resourcePath: %s\n",resourcePath.c_str());
+    std::printf("WebInterface using resourcePath: %s\n",resourcePath.c_str());
     responder.setResourcePath(resourcePath);
 
-    printf("--------------------------------------------------------------\n");
+    std::printf("--------------------------------------------------------------\n");
     if(rf.check("help")) {
-        ::exit(1);
+        std::exit(1);
     }
 
     responder.init();
@@ -62,7 +69,7 @@ bool roboticslab::WebInterface::configure(yarp::os::ResourceFinder &rf)
 /************************************************************************/
 bool roboticslab::WebInterface::updateModule()
 {
-    printf("Server running, visit: http://%s:%d/index\n",
+    std::printf("Server running, visit: http://%s:%d/index\n",
                    contact.getHost().c_str(),
                    contact.getPort());
     yarp::os::Bottle push;

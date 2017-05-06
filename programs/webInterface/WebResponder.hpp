@@ -3,24 +3,17 @@
 #ifndef __WEB_RESPONDER_HPP__
 #define __WEB_RESPONDER_HPP__
 
-#include <yarp/os/all.h>
+#include <string>
+
+#include <yarp/os/PortReader.h>
+#include <yarp/os/ConnectionReader.h>
+#include <yarp/os/ResourceFinder.h>
 
 #include <yarp/dev/PolyDriver.h>
-#include <yarp/dev/ControlBoardInterfaces.h>
+#include <yarp/dev/IPositionControl.h>
+#include <yarp/dev/IControlMode.h>
 
 #include <ICartesianControl.h>
-
-#include <fstream>
-#include <sstream>
-#include <vector>
-
-#ifdef WIN32
-#include <windows.h>
-#else
-#include <dirent.h>  // for listing directory contents
-#endif
-
-#include <stdlib.h>  // for system
 
 #define JOYPAD_RELMOVE 5  // [deg]
 #define CJOYPAD_RELMOVE_POS 0.10  // [m]
