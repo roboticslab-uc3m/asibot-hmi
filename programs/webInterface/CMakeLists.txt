@@ -25,5 +25,9 @@ target_link_libraries(${KEYWORD} ${YARP_LIBRARIES} ${ASIBOT_HMI_LIBRARIES})
 
 # Create installation rule.
 install(TARGETS ${KEYWORD}
+        EXPORT ASIBOT_HMI
         DESTINATION ${CMAKE_INSTALL_BINDIR}
         COMPONENT web_interface)
+
+# Export library name and current target.
+set_property(GLOBAL APPEND PROPERTY ASIBOT_HMI_TARGETS ${KEYWORD})
