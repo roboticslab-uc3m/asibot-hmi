@@ -30,7 +30,7 @@ set_property(GLOBAL PROPERTY ASIBOT_HMI_TARGETS)
 
 # Define and enter subdirectories.
 add_subdirectory(share)
-add_subdirectory(libraries)
+#add_subdirectory(libraries)
 add_subdirectory(programs)
 
 # Output configuration files.
