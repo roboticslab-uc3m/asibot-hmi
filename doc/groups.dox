@@ -1,8 +1,7 @@
-
 /**
-@brief The main, catch-all namespace for TEO.
+@brief The main, catch-all namespace for Roboticslab UC3M.
  */
-namespace teo {}
+namespace roboticslab {}
 
 /**
  * \defgroup asibot-hmi_libraries asibot-hmi Libraries
@@ -28,6 +27,3 @@ namespace teo {}
  *
  * @brief asibot-hmi examples.
  */
-
-
-

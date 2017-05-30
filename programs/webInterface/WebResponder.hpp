@@ -70,12 +70,12 @@ protected:
     yarp::dev::PolyDriver simDevice;
     yarp::dev::IPositionControl *simPos;
     yarp::dev::IControlMode *simMode;
-    teo::ICartesianControl *simCart;
+    roboticslab::ICartesianControl *simCart;
 
     yarp::dev::PolyDriver realDevice;
     yarp::dev::IPositionControl *realPos;
     yarp::dev::IControlMode *realMode;
-    teo::ICartesianControl *realCart;
+    roboticslab::ICartesianControl *realCart;
 
     yarp::dev::PolyDriver cartesianClientDevice;
 

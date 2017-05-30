@@ -1,11 +1,9 @@
 ### options: cpp libraries
-option(ENABLE_ExampleLibrary "Choose if you want to compile ExampleLibrary" TRUE)
 
 ### options: cpp programs
 option(ENABLE_webInterface "Choose if you want to compile webInterface" TRUE)
 
 # Register features.
-add_feature_info(ExampleLibrary ENABLE_ExampleLibrary "Fancy example library.")
 add_feature_info(webInterface ENABLE_webInterface "ASIBOT web interface.")
 
 # Let the user specify a configuration (only single-config generators).
