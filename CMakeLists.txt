@@ -12,6 +12,8 @@ set(ASIBOT_HMI_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 list(APPEND CMAKE_MODULE_PATH ${ASIBOT_HMI_MODULE_PATH})
 
 # Bootstrap YCM.
+# https://github.com/robotology/ycm/issues/118
+set(YCM_TAG v0.2.3)
 include(YCMBootstrap)
 
 # Retrieve current ASIBOT_HMI version.
