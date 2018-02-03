@@ -8,8 +8,7 @@ cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
 project(ASIBOT_HMI)
 
 # Set module path.
-set(ASIBOT_HMI_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
-list(APPEND CMAKE_MODULE_PATH ${ASIBOT_HMI_MODULE_PATH})
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 # Bootstrap YCM.
 # https://github.com/robotology/ycm/issues/118
@@ -27,7 +26,6 @@ include(ASIBOT_HMIOptions)
 
 # Define global properties to store relevant configuration.
 set_property(GLOBAL PROPERTY ASIBOT_HMI_INCLUDE_DIRS)
-set_property(GLOBAL PROPERTY ASIBOT_HMI_LIBRARIES)
 set_property(GLOBAL PROPERTY ASIBOT_HMI_TARGETS)
 
 # Define and enter subdirectories.
@@ -46,4 +44,3 @@ include(ASIBOT_HMIPackage)
 
 # Generate a report of enabled/disabled features.
 feature_summary(FATAL_ON_MISSING_REQUIRED_PACKAGES WHAT ALL)
-
