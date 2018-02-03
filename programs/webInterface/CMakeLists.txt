@@ -2,8 +2,6 @@
 # Authors: Robotics Lab UC3M
 # CopyPolicy: Released under the terms of the LGPLv2.1 or later
 
-set(KEYWORD "webInterface")
-
 # Find YARP.
 find_package(YARP REQUIRED)
 
@@ -11,23 +9,26 @@ find_package(YARP REQUIRED)
 find_package(ROBOTICSLAB_KINEMATICS_DYNAMICS REQUIRED)
 
 # Retrieve global include paths and libraries.
-get_property(ASIBOT_HMI_INCLUDE_DIRS GLOBAL PROPERTY ASIBOT_HMI_INCLUDE_DIRS)
-get_property(ASIBOT_HMI_LIBRARIES GLOBAL PROPERTY ASIBOT_HMI_LIBRARIES)
+get_property(_common_includes GLOBAL PROPERTY ASIBOT_HMI_INCLUDE_DIRS)
 
 # Define include paths.
-include_directories(${YARP_INCLUDE_DIRS} ${ASIBOT_HMI_INCLUDE_DIRS} ${ROBOTICSLAB_KINEMATICS_DYNAMICS_INCLUDE_DIRS})
+include_directories(${YARP_INCLUDE_DIRS}
+                    ${ROBOTICSLAB_KINEMATICS_DYNAMICS_INCLUDE_DIRS}
+                    ${_common_includes})
 
 # Configure executable build target.
-add_executable(${KEYWORD} main.cpp WebInterface.cpp WebInterface.hpp WebResponder.cpp WebResponder.hpp)
+add_executable(webInterface main.cpp
+                            WebInterface.cpp
+                            WebInterface.hpp
+                            WebResponder.cpp
+                            WebResponder.hpp)
 
 # Link external libraries.
-target_link_libraries(${KEYWORD} ${YARP_LIBRARIES} ${ASIBOT_HMI_LIBRARIES})
+target_link_libraries(webInterface YARP::YARP_OS
+                                   YARP::YARP_dev
+                                   YARP::YARP_init)
 
 # Create installation rule.
-install(TARGETS ${KEYWORD}
-        EXPORT ASIBOT_HMI
+install(TARGETS webInterface
         DESTINATION ${CMAKE_INSTALL_BINDIR}
         COMPONENT web_interface)
-
-# Export library name and current target.
-set_property(GLOBAL APPEND PROPERTY ASIBOT_HMI_TARGETS ${KEYWORD})
