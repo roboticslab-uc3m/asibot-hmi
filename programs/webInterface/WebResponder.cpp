@@ -693,7 +693,7 @@ bool roboticslab::WebResponder::read(yarp::os::ConnectionReader& in)
             int ax;
             realPos->getAxes(&ax);
             std::vector<int> modes(ax, VOCAB_CM_POSITION);
-            simMode->setControlModes(modes.data());
+            realMode->setControlModes(modes.data());
         }
         if((realPos)&&(inMovement == std::string("absolute"))) realPos->positionMove(targets);
         if((realPos)&&(inMovement == std::string("relative"))) realPos->relativeMove(targets);
