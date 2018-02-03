@@ -3,24 +3,17 @@
 #ifndef __WEB_RESPONDER_HPP__
 #define __WEB_RESPONDER_HPP__
 
-#include <yarp/os/all.h>
+#include <string>
+
+#include <yarp/os/PortReader.h>
+#include <yarp/os/ConnectionReader.h>
+#include <yarp/os/ResourceFinder.h>
 
 #include <yarp/dev/PolyDriver.h>
-#include <yarp/dev/ControlBoardInterfaces.h>
+#include <yarp/dev/IPositionControl.h>
+#include <yarp/dev/IControlMode.h>
 
 #include <ICartesianControl.h>
-
-#include <fstream>
-#include <sstream>
-#include <vector>
-
-#ifdef WIN32
-#include <windows.h>
-#else
-#include <dirent.h>  // for listing directory contents
-#endif
-
-#include <stdlib.h>  // for system
 
 #define JOYPAD_RELMOVE 5  // [deg]
 #define CJOYPAD_RELMOVE_POS 0.10  // [m]
@@ -29,9 +22,6 @@
 
 namespace roboticslab
 {
-
-using namespace yarp::os;  // FIXME
-using namespace std;  // FIXME
 
 /**
  *
@@ -46,51 +36,51 @@ class WebResponder : public yarp::os::PortReader
 {
 public:
 
-    yarp::os::ConstString getCss();
+    std::string getCss();
     bool init();
     bool closeDevices();
     bool read(yarp::os::ConnectionReader& in);
     bool setResourceFinder(yarp::os::ResourceFinder &rf);
-    bool setUserPath(const yarp::os::ConstString& _userPath);
-    bool setResourcePath(const yarp::os::ConstString& _resourcePath);
+    bool setUserPath(const std::string& _userPath);
+    bool setResourcePath(const std::string& _resourcePath);
 
 protected:
 
     yarp::os::ResourceFinder rf;
     bool simConnected, realConnected;
-    yarp::os::ConstString userPath;
-    yarp::os::ConstString resourcePath;
-    std::string readFile(const yarp::os::ConstString& filePath);  // needs absoulte path
-    std::string readHtml(const yarp::os::ConstString& fileName);  // grabs from htmlPath
-    bool appendToFile(const yarp::os::ConstString& absFile, const yarp::os::ConstString& inString); // writes to userPath
-    bool rewriteFile(const yarp::os::ConstString& absFile, const yarp::os::ConstString& inString); // writes to userPath
-    bool deleteFile(const yarp::os::ConstString& absFile); // needs absoulte path
+    std::string userPath;
+    std::string resourcePath;
+    std::string readFile(const std::string& filePath);  // needs absoulte path
+    std::string readHtml(const std::string& fileName);  // grabs from htmlPath
+    bool appendToFile(const std::string& absFile, const std::string& inString); // writes to userPath
+    bool rewriteFile(const std::string& absFile, const std::string& inString); // writes to userPath
+    bool deleteFile(const std::string& absFile); // needs absoulte path
     std::string& replaceAll(std::string& context, const std::string& from, const std::string& to);
-    int stringToInt(const yarp::os::ConstString& inString);
-    double stringToDouble(const yarp::os::ConstString& inString);
-    yarp::os::ConstString doubleToString(const double& inDouble);
-    yarp::os::ConstString intToString(const int& inInt);
-    yarp::os::ConstString pipedExec(const yarp::os::ConstString& cmd);
-    yarp::os::ConstString pointButtonCreator(const yarp::os::ConstString& pointsFile);
-    yarp::os::ConstString wordOptionCreator(const yarp::os::ConstString& wordsFile);
-    yarp::os::ConstString fileListCreator();
-    yarp::os::ConstString taskListCreator();
-    yarp::os::ConstString taskButtonCreator();
+    int stringToInt(const std::string& inString);
+    double stringToDouble(const std::string& inString);
+    std::string doubleToString(const double& inDouble);
+    std::string intToString(const int& inInt);
+    std::string pipedExec(const std::string& cmd);
+    std::string pointButtonCreator(const std::string& pointsFile);
+    std::string wordOptionCreator(const std::string& wordsFile);
+    std::string fileListCreator();
+    std::string taskListCreator();
+    std::string taskButtonCreator();
 
     yarp::dev::PolyDriver simDevice;
     yarp::dev::IPositionControl *simPos;
     yarp::dev::IControlMode *simMode;
-    teo::ICartesianControl *simCart;
+    roboticslab::ICartesianControl *simCart;
 
     yarp::dev::PolyDriver realDevice;
     yarp::dev::IPositionControl *realPos;
     yarp::dev::IControlMode *realMode;
-    teo::ICartesianControl *realCart;
+    roboticslab::ICartesianControl *realCart;
 
     yarp::dev::PolyDriver cartesianClientDevice;
 
     double captureX[NUM_CART_COORDS];
-    yarp::os::ConstString lastEditName;
+    std::string lastEditName;
 };
 
 }  //-- namespace roboticslab
