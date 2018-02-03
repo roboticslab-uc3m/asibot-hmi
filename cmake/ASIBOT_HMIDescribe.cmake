@@ -2,31 +2,64 @@
 export(PACKAGE ASIBOT_HMI)
 
 # Retrieve global properties.
-get_property(ASIBOT_HMI_INCLUDE_DIRS GLOBAL PROPERTY ASIBOT_HMI_INCLUDE_DIRS)
-get_property(ASIBOT_HMI_TARGETS GLOBAL PROPERTY ASIBOT_HMI_TARGETS)
-get_property(_ASIBOT_HMI_LIBRARIES GLOBAL PROPERTY ASIBOT_HMI_LIBRARIES)
+get_property(_common_includes GLOBAL PROPERTY ASIBOT_HMI_INCLUDE_DIRS)
+get_property(_exported_targets GLOBAL PROPERTY ASIBOT_HMI_TARGETS)
 
-# Append namespace prefix to exported libraries.
-set(ASIBOT_HMI_LIBRARIES)
-foreach(lib ${_ASIBOT_HMI_LIBRARIES})
-  list(APPEND ASIBOT_HMI_LIBRARIES ASIBOT_HMI::${lib})
-endforeach()
-unset(_ASIBOT_HMI_LIBRARIES) # just in case
+# CMake installation path.
+if(WIN32)
+    set(_cmake_destination cmake)
+else()
+    set(_cmake_destination ${CMAKE_INSTALL_LIBDIR}/cmake/ASIBOT_HMI)
+endif()
 
-# Set build/install pairs of paths for each exported property.
-set(ASIBOT_HMI_BUILD_INCLUDE_DIRS ${ASIBOT_HMI_INCLUDE_DIRS})
-set(ASIBOT_HMI_INSTALL_INCLUDE_DIRS ${CMAKE_INSTALL_FULL_INCLUDEDIR})
+# Create and install config files.
+include(CMakePackageConfigHelpers)
 
-# Create and install config and version files (YCM).
-include(InstallBasicPackageFiles)
+# Set exported variables (build tree).
+set(ASIBOT_HMI_INCLUDE_DIR "${_common_includes}")
+set(ASIBOT_HMI_MODULE_DIR ${CMAKE_SOURCE_DIR}/cmake)
 
-install_basic_package_files(ASIBOT_HMI
-                            VERSION ${ASIBOT_HMI_VERSION_SHORT}
-                            COMPATIBILITY AnyNewerVersion
-                            TARGETS_PROPERTY ASIBOT_HMI_TARGETS
-                            NO_CHECK_REQUIRED_COMPONENTS_MACRO
-                            EXTRA_PATH_VARS_SUFFIX INCLUDE_DIRS)
+# <pkg>Config.cmake (build tree).
+configure_package_config_file(${CMAKE_SOURCE_DIR}/cmake/template/ASIBOT_HMIConfig.cmake.in
+                              ${CMAKE_BINARY_DIR}/ASIBOT_HMIConfig.cmake
+                              INSTALL_DESTINATION ${CMAKE_BINARY_DIR}
+                              INSTALL_PREFIX ${CMAKE_BINARY_DIR}
+                              PATH_VARS ASIBOT_HMI_INCLUDE_DIR
+                                        ASIBOT_HMI_MODULE_DIR
+                              NO_CHECK_REQUIRED_COMPONENTS_MACRO)
+
+# Set exported variables (install tree).
+set(ASIBOT_HMI_INCLUDE_DIR ${CMAKE_INSTALL_INCLUDEDIR})
+set(ASIBOT_HMI_MODULE_DIR ${CMAKE_INSTALL_DATADIR}/ASIBOT_HMI/cmake)
+
+# <pkg>Config.cmake (install tree).
+configure_package_config_file(${CMAKE_SOURCE_DIR}/cmake/template/ASIBOT_HMIConfig.cmake.in
+                              ${CMAKE_BINARY_DIR}/ASIBOT_HMIConfig.cmake.install
+                              INSTALL_DESTINATION ${_cmake_destination}
+                              PATH_VARS ASIBOT_HMI_INCLUDE_DIR
+                                        ASIBOT_HMI_MODULE_DIR
+                              NO_CHECK_REQUIRED_COMPONENTS_MACRO)
+
+# Install <pkg>Config.cmake.
+install(FILES ${CMAKE_BINARY_DIR}/ASIBOT_HMIConfig.cmake.install
+        RENAME ASIBOT_HMIConfig.cmake
+        DESTINATION ${_cmake_destination})
+
+# Export library targets if enabled.
+# https://github.com/roboticslab-uc3m/project-generator/issues/19
+if(_exported_targets)
+    # <pkg>Targets.cmake (build tree).
+    # In CMake 3.0 or later: export(EXPORT ASIBOT_HMI...)
+    export(TARGETS ${_exported_targets}
+           NAMESPACE ROBOTICSLAB::
+           FILE ASIBOT_HMITargets.cmake)
+
+    # <pkg>Targets.cmake (install tree).
+    install(EXPORT ASIBOT_HMI
+            DESTINATION ${_cmake_destination}
+            NAMESPACE ROBOTICSLAB::
+            FILE ASIBOT_HMITargets.cmake)
+endif()
 
 # Configure and create uninstall target (YCM).
 include(AddUninstallTarget)
-

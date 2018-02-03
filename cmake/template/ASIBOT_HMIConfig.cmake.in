@@ -1,0 +1,40 @@
+# Copyright: Universidad Carlos III de Madrid (C) 2017
+# Authors: Robotics Lab UC3M
+# CopyPolicy: Released under the terms of the LGPLv2.1 or later
+
+# Once you find_package(ASIBOT_HMI), it defines:
+#
+# * several targets; it's advised to link against individual libraries with the usual
+#   target_link_libraries() command
+#
+# * ASIBOT_HMI_INCLUDE_DIRS; use include_directories(${ASIBOT_HMI_INCLUDE_DIRS})
+#
+# * ASIBOT_HMI_MODULE_PATH; use list(APPEND CMAKE_MODULE_PATH ${ASIBOT_HMI_MODULE_PATH})
+#
+# * ASIBOT_HMI_LIBRARIES; shorthand for linking against all targets at once,
+#   use target_link_libraries(_target ${ASIBOT_HMI_LIBRARIES})
+#
+# Notes:
+#
+# * All target names are prepended with the ROBOTICSLAB:: namespace
+
+@PACKAGE_INIT@
+
+set(ASIBOT_HMI_INCLUDE_DIRS)
+
+foreach(_dir @PACKAGE_ASIBOT_HMI_INCLUDE_DIR@)
+    set_and_check(_temp_var ${_dir})
+    list(APPEND ASIBOT_HMI_INCLUDE_DIRS ${_temp_var})
+endforeach()
+
+set(ASIBOT_HMI_MODULE_PATH "@PACKAGE_ASIBOT_HMI_MODULE_DIR@")
+
+if(NOT "@_exported_targets@" STREQUAL "")
+    include(${CMAKE_CURRENT_LIST_DIR}/ASIBOT_HMITargets.cmake)
+
+    set(ASIBOT_HMI_LIBRARIES)
+
+    foreach(_target @_exported_targets@)
+        list(APPEND ASIBOT_HMI_LIBRARIES ROBOTICSLAB::${_target})
+    endforeach()
+endif()
