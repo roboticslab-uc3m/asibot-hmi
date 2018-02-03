@@ -95,7 +95,7 @@ std::string roboticslab::WebResponder::readFile(const std::string& filePath)
         std::printf("Not able to open file.\n");
         return str;
     }
-    t.seekg(0, std::ios::end);   
+    t.seekg(0, std::ios::end);
     str.reserve(t.tellg());
     t.seekg(0, std::ios::beg);
     str.assign((std::istreambuf_iterator<char>(t)),
@@ -556,7 +556,7 @@ bool roboticslab::WebResponder::read(yarp::os::ConnectionReader& in)
             options.put("remote","/canbot");
             options.put("local","/webLocal");
             realDevice.open(options);
-            bool ok = true;        
+            bool ok = true;
             if(!realDevice.isValid()) {
                 std::printf("[error] canbot device not available.\n");
                 ok = false;
@@ -596,7 +596,7 @@ bool roboticslab::WebResponder::read(yarp::os::ConnectionReader& in)
             optionsDevice.put("remote","/asibot/asibotManipulator");
             optionsDevice.put("local","/webLocal");
             simDevice.open(optionsDevice);
-            bool ok = true;        
+            bool ok = true;
             if(!simDevice.isValid()) {
                 std::printf("[error] ravebot device not available.\n");
                 ok = false;
@@ -653,14 +653,16 @@ bool roboticslab::WebResponder::read(yarp::os::ConnectionReader& in)
         if(simPos) {
             int ax;
             simPos->getAxes(&ax);
-            for (int i=0;i<ax;i++) simMode->setPositionMode(i);
+            std::vector<int> modes(ax, VOCAB_CM_POSITION);
+            simMode->setControlModes(modes.data());
         }
         if((simPos)&&(inMovement == std::string("right"))) simPos->relativeMove(inJoint-1,JOYPAD_RELMOVE);
         if((simPos)&&(inMovement == std::string("left"))) simPos->relativeMove(inJoint-1,-JOYPAD_RELMOVE);
         if(realPos) {
             int ax;
             realPos->getAxes(&ax);
-            for (int i=0;i<ax;i++) realMode->setPositionMode(i);
+            std::vector<int> modes(ax, VOCAB_CM_POSITION);
+            realMode->setControlModes(modes.data());
         }
         if((realPos)&&(inMovement == std::string("right"))) realPos->relativeMove(inJoint-1,JOYPAD_RELMOVE);
         if((realPos)&&(inMovement == std::string("left"))) realPos->relativeMove(inJoint-1,-JOYPAD_RELMOVE);
@@ -682,16 +684,16 @@ bool roboticslab::WebResponder::read(yarp::os::ConnectionReader& in)
         if(simPos) {
             int ax;
             simPos->getAxes(&ax);
-            for (int i=0;i<ax;i++)
-                simMode->setPositionMode(i);
+            std::vector<int> modes(ax, VOCAB_CM_POSITION);
+            simMode->setControlModes(modes.data());
         }
         if((simPos)&&(inMovement == std::string("absolute"))) simPos->positionMove(targets);
         if((simPos)&&(inMovement == std::string("relative"))) simPos->relativeMove(targets);
         if(realPos) {
             int ax;
             realPos->getAxes(&ax);
-            for (int i=0;i<ax;i++)
-                realMode->setPositionMode(i);
+            std::vector<int> modes(ax, VOCAB_CM_POSITION);
+            simMode->setControlModes(modes.data());
         }
         if((realPos)&&(inMovement == std::string("absolute"))) realPos->positionMove(targets);
         if((realPos)&&(inMovement == std::string("relative"))) realPos->relativeMove(targets);

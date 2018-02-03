@@ -11,7 +11,7 @@
 
 #include <yarp/dev/PolyDriver.h>
 #include <yarp/dev/IPositionControl.h>
-#include <yarp/dev/IControlMode.h>
+#include <yarp/dev/IControlMode2.h>
 
 #include <ICartesianControl.h>
 
@@ -69,12 +69,12 @@ protected:
 
     yarp::dev::PolyDriver simDevice;
     yarp::dev::IPositionControl *simPos;
-    yarp::dev::IControlMode *simMode;
+    yarp::dev::IControlMode2 *simMode;
     roboticslab::ICartesianControl *simCart;
 
     yarp::dev::PolyDriver realDevice;
     yarp::dev::IPositionControl *realPos;
-    yarp::dev::IControlMode *realMode;
+    yarp::dev::IControlMode2 *realMode;
     roboticslab::ICartesianControl *realCart;
 
     yarp::dev::PolyDriver cartesianClientDevice;
