@@ -2,6 +2,10 @@
 
 Human-machine interface applications for ASIBOT.
 
+<p align="center">
+    <img src="doc/fig/webInterface.png" alt="webInterface image"/>
+</p>
+
 ## Contributing
 
 #### Posting Issues
