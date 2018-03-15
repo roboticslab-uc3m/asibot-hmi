@@ -20,7 +20,7 @@ set(ASIBOT_HMI_INCLUDE_DIR "${_common_includes}")
 set(ASIBOT_HMI_MODULE_DIR ${CMAKE_SOURCE_DIR}/cmake)
 
 # <pkg>Config.cmake (build tree).
-configure_package_config_file(${CMAKE_SOURCE_DIR}/cmake/template/ASIBOT_HMIConfig.cmake.in
+configure_package_config_file(${CMAKE_SOURCE_DIR}/cmake/templates/ASIBOT_HMIConfig.cmake.in
                               ${CMAKE_BINARY_DIR}/ASIBOT_HMIConfig.cmake
                               INSTALL_DESTINATION ${CMAKE_BINARY_DIR}
                               INSTALL_PREFIX ${CMAKE_BINARY_DIR}
@@ -33,7 +33,7 @@ set(ASIBOT_HMI_INCLUDE_DIR ${CMAKE_INSTALL_INCLUDEDIR})
 set(ASIBOT_HMI_MODULE_DIR ${CMAKE_INSTALL_DATADIR}/ASIBOT_HMI/cmake)
 
 # <pkg>Config.cmake (install tree).
-configure_package_config_file(${CMAKE_SOURCE_DIR}/cmake/template/ASIBOT_HMIConfig.cmake.in
+configure_package_config_file(${CMAKE_SOURCE_DIR}/cmake/templates/ASIBOT_HMIConfig.cmake.in
                               ${CMAKE_BINARY_DIR}/ASIBOT_HMIConfig.cmake.install
                               INSTALL_DESTINATION ${_cmake_destination}
                               PATH_VARS ASIBOT_HMI_INCLUDE_DIR
