@@ -25,6 +25,7 @@ install:
   - git clone https://github.com/roboticslab-uc3m/kinematics-dynamics
   - mkdir -p kinematics-dynamics/build && cd "$_"
   - cmake ..
+  - export ROBOTICSLAB_KINEMATICS_DYNAMICS_DIR=$PWD
 
 before_script:
   - cd $TRAVIS_BUILD_DIR
