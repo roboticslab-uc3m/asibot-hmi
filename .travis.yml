@@ -8,8 +8,7 @@ compiler:
   - clang
 
 before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get install -y libace-dev
+  #- sudo apt-get -qq update
   - '[[ "$TRAVIS_EVENT_TYPE" = cron ]] && export YARP_CHECKOUT=devel || export YARP_CHECKOUT=master'
 
 install:
@@ -17,15 +16,15 @@ install:
   - cd
   - git clone --depth=1 --branch=$YARP_CHECKOUT https://github.com/robotology/yarp
   - mkdir -p yarp/build && cd "$_"
-  - cmake ..
-  - sudo make -j2 install
+  - cmake .. -DSKIP_ACE=ON
+  - make -j$(nproc)
+  - sudo make install
 
   # Clone and configure ROBOTICSLAB_KINEMATICS_DYNAMICS
   - cd
   - git clone https://github.com/roboticslab-uc3m/kinematics-dynamics
   - mkdir -p kinematics-dynamics/build && cd "$_"
-  - cmake .. -DENABLE_TrajectoryLib:BOOL=OFF -DENABLE_KdlVectorConverterLib:BOOL=OFF -DENABLE_KinematicRepresentationLib:BOOL=OFF -DENABLE_YarpTinyMathLib:BOOL=OFF -DENABLE_BasicCartesianControl:BOOL=OFF -DENABLE_CartesianControlServer:BOOL=OFF -DENABLE_CartesianControlClient:BOOL=OFF -DENABLE_KdlSolver:BOOL=OFF -DENABLE_AsibotSolver:BOOL=OFF -DENABLE_BasicTwoLimbCartesianControl:BOOL=OFF -DENABLE_TwoLimbCartesianControlServer:BOOL=OFF -DENABLE_transCoordsUsingJoints:BOOL=OFF -DENABLE_tests:BOOL=OFF
-  - export ROBOTICSLAB_KINEMATICS_DYNAMICS_DIR=$PWD
+  - cmake ..
 
 before_script:
   - cd $TRAVIS_BUILD_DIR
@@ -34,3 +33,6 @@ before_script:
 
 script:
   - make
+
+after_success:
+  - sudo make install
