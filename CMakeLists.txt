@@ -5,7 +5,7 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
 # Start a project.
-project(ASIBOT_HMI)
+project(ASIBOT_HMI LANGUAGES CXX)
 
 # Set module path.
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
@@ -21,10 +21,6 @@ include(ASIBOT_HMISystem)
 
 # Setup build options.
 include(ASIBOT_HMIOptions)
-
-# Define global properties to store relevant configuration.
-set_property(GLOBAL PROPERTY ASIBOT_HMI_INCLUDE_DIRS)
-set_property(GLOBAL PROPERTY ASIBOT_HMI_TARGETS)
 
 # Define and enter subdirectories.
 add_subdirectory(share)

@@ -22,4 +22,3 @@ if(DOXYGEN_FOUND)
   # Register features.
   add_feature_info(ASIBOT_HMI_docs ASIBOT_HMI_DOXYGEN_HTML "ASIBOT_HMI documentation generator.")
 endif()
-

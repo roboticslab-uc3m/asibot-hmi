@@ -49,8 +49,7 @@ install(FILES ${CMAKE_BINARY_DIR}/ASIBOT_HMIConfig.cmake.install
 # https://github.com/roboticslab-uc3m/project-generator/issues/19
 if(_exported_targets)
     # <pkg>Targets.cmake (build tree).
-    # In CMake 3.0 or later: export(EXPORT ASIBOT_HMI...)
-    export(TARGETS ${_exported_targets}
+    export(EXPORT ASIBOT_HMI
            NAMESPACE ROBOTICSLAB::
            FILE ASIBOT_HMITargets.cmake)
 
