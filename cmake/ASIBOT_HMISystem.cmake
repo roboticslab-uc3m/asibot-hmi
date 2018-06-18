@@ -17,3 +17,6 @@ endif()
 
 # Install system runtime libraries.
 include(InstallRequiredSystemLibraries)
+
+# Configure installation paths for YARP resources.
+yarp_configure_external_installation(asibot WITH_PLUGINS)

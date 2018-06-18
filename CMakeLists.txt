@@ -12,6 +12,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 # Find project's hard dependencies.
 find_package(YCM 0.8 REQUIRED)
+find_package(YARP REQUIRED)
 
 # Retrieve current ASIBOT_HMI version.
 include(ASIBOT_HMIVersion)

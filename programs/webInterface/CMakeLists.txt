@@ -2,9 +2,6 @@
 # Authors: Robotics Lab UC3M
 # CopyPolicy: Released under the terms of the LGPLv2.1 or later
 
-# Find YARP.
-find_package(YARP REQUIRED)
-
 # Find ROBOTICSLAB_KINEMATICS_DYNAMICS.
 find_package(ROBOTICSLAB_KINEMATICS_DYNAMICS REQUIRED)
 
