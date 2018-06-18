@@ -12,20 +12,27 @@ before_install:
   - '[[ "$TRAVIS_EVENT_TYPE" = cron ]] && export YARP_CHECKOUT=devel || export YARP_CHECKOUT=master'
 
 install:
+  # Install color-debug
+  - git clone https://github.com/roboticslab-uc3m/color-debug
+  - mkdir -p color-debug/build && cd "$_"
+  - cmake ..
+  - sudo make install
+  - cd ../..
+
   # Clone and build YARP
-  - cd
   - git clone --depth=1 --branch=$YARP_CHECKOUT https://github.com/robotology/yarp
   - mkdir -p yarp/build && cd "$_"
   - cmake .. -DSKIP_ACE=ON
   - make -j$(nproc)
   - sudo make install
+  - cd ../..
 
   # Clone and configure ROBOTICSLAB_KINEMATICS_DYNAMICS
-  - cd
   - git clone https://github.com/roboticslab-uc3m/kinematics-dynamics
   - mkdir -p kinematics-dynamics/build && cd "$_"
   - cmake ..
   - export ROBOTICSLAB_KINEMATICS_DYNAMICS_DIR=$PWD
+  - cd ../..
 
 before_script:
   - cd $TRAVIS_BUILD_DIR
@@ -33,7 +40,7 @@ before_script:
   - cmake ..
 
 script:
-  - make
+  - make && sudo make install
 
 after_success:
-  - sudo make install
+  - sudo make uninstall
