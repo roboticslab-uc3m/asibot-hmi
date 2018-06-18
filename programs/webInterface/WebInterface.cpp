@@ -56,9 +56,9 @@ bool roboticslab::WebInterface::configure(yarp::os::ResourceFinder &rf)
 
     std::string name = rf.check("name",yarp::os::Value("/web")).asString();
 
-    contact = yarp::os::Contact::byName(name);
+    contact.setName(name);
     if (webPort!=0) {
-        contact = contact.addSocket("",webIp,webPort);
+        contact.setSocket("",webIp,webPort);
     }
     if (!server.open(contact)) return false;
     contact = server.where();

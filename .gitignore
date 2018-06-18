@@ -31,8 +31,11 @@
 # CMake
 CMakeLists.txt.user
 **/build*/
+
+IDE-specific
 /.project
 /.cproject
 
 # Other
 /external/
+/doc/html/
