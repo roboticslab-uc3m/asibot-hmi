@@ -47,4 +47,3 @@ endif()
 
 # Print version.
 message(STATUS "ASIBOT_HMI version: ${ASIBOT_HMI_VERSION_SHORT} (${ASIBOT_HMI_VERSION})")
-

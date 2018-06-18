@@ -2,31 +2,21 @@
 # Authors: Robotics Lab UC3M
 # CopyPolicy: Released under the terms of the LGPLv2.1 or later
 
-cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
 # Start a project.
-project(ASIBOT_HMI)
-
-# Safety check against missing dummy library for system-available COLOR_DEBUG.
-# Remove if cmake_minimum_required() is set to 3.0 or later.
-if(POLICY CMP0046)
-    cmake_policy(SET CMP0046 NEW)
-endif()
-
-# Disable annoying YCM-related warnings.
-# Remove if cmake_minimum_required() is set to 3.1 or later.
-if(POLICY CMP0054)
-    cmake_policy(SET CMP0054 NEW)
-endif()
+project(ASIBOT_HMI LANGUAGES CXX)
 
 # Set module path.
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake
-                              ${CMAKE_SOURCE_DIR}/cmake/ycm-modules)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
-# Bootstrap YCM.
-# https://github.com/robotology/ycm/issues/118
-set(YCM_TAG v0.2.2)
-include(YCMBootstrap)
+# Find project's hard dependencies.
+find_package(YCM 0.8 REQUIRED)
+# https://github.com/roboticslab-uc3m/questions-and-answers/issues/65
+find_package(YARP 3.0 QUIET)
+if(NOT YARP_FOUND)
+    find_package(YARP 2.3.70 REQUIRED)
+endif()
 
 # Retrieve current ASIBOT_HMI version.
 include(ASIBOT_HMIVersion)
@@ -36,10 +26,6 @@ include(ASIBOT_HMISystem)
 
 # Setup build options.
 include(ASIBOT_HMIOptions)
-
-# Define global properties to store relevant configuration.
-set_property(GLOBAL PROPERTY ASIBOT_HMI_INCLUDE_DIRS)
-set_property(GLOBAL PROPERTY ASIBOT_HMI_TARGETS)
 
 # Define and enter subdirectories.
 add_subdirectory(share)
