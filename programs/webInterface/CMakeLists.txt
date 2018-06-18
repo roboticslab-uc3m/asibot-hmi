@@ -5,12 +5,6 @@
 # Find ROBOTICSLAB_KINEMATICS_DYNAMICS.
 find_package(ROBOTICSLAB_KINEMATICS_DYNAMICS REQUIRED)
 
-# Retrieve global include paths and libraries.
-get_property(_common_includes GLOBAL PROPERTY ASIBOT_HMI_INCLUDE_DIRS)
-
-# Define include paths.
-include_directories(${_common_includes})
-
 # Configure executable build target.
 add_executable(webInterface main.cpp
                             WebInterface.cpp
