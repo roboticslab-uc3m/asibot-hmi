@@ -9,8 +9,7 @@ find_package(ROBOTICSLAB_KINEMATICS_DYNAMICS REQUIRED)
 get_property(_common_includes GLOBAL PROPERTY ASIBOT_HMI_INCLUDE_DIRS)
 
 # Define include paths.
-include_directories(${YARP_INCLUDE_DIRS}
-                    ${_common_includes})
+include_directories(${_common_includes})
 
 # Configure executable build target.
 add_executable(webInterface main.cpp
