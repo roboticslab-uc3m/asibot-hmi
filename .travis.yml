@@ -9,7 +9,7 @@ compiler:
 
 before_install:
   #- sudo apt-get -qq update
-  - '[[ "$TRAVIS_EVENT_TYPE" = cron ]] && export YARP_CHECKOUT=devel || export YARP_CHECKOUT=master'
+  - '[[ "$TRAVIS_EVENT_TYPE" = cron ]] && export ROBOTOLOGY_CHECKOUT=devel || export ROBOTOLOGY_CHECKOUT=master'
 
 install:
   # Install color-debug
@@ -19,8 +19,16 @@ install:
   - sudo make install
   - cd ../..
 
+  #-- Install YCM
+  - git clone --branch="$ROBOTOLOGY_CHECKOUT" https://github.com/robotology/ycm
+  - mkdir -p ycm/build && cd "$_"
+  - cmake ..
+  - make -j$(nproc)
+  - sudo make install
+  - cd ../..
+
   # Clone and build YARP
-  - git clone --depth=1 --branch=$YARP_CHECKOUT https://github.com/robotology/yarp
+  - git clone --depth=1 --branch=$ROBOTOLOGY_CHECKOUT https://github.com/robotology/yarp
   - mkdir -p yarp/build && cd "$_"
   - cmake .. -DSKIP_ACE=ON
   - make -j$(nproc)
