@@ -10,13 +10,16 @@ project(ASIBOT_HMI LANGUAGES CXX)
 # Set module path.
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
-# Find project's hard dependencies.
+# Hard dependencies.
 find_package(YCM 0.8 REQUIRED)
 # https://github.com/roboticslab-uc3m/questions-and-answers/issues/65
 find_package(YARP 3.0 QUIET)
 if(NOT YARP_FOUND)
     find_package(YARP 2.3.70 REQUIRED)
 endif()
+
+# Soft dependencies.
+find_package(ROBOTICSLAB_KINEMATICS_DYNAMICS QUIET)
 
 # Retrieve current ASIBOT_HMI version.
 include(ASIBOT_HMIVersion)
