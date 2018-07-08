@@ -1,7 +1,8 @@
 ### options: cpp libraries
 
 ### options: cpp programs
-option(ENABLE_webInterface "Choose if you want to compile webInterface" TRUE)
+cmake_dependent_option(ENABLE_webInterface "Choose if you want to compile webInterface" ON
+                       ROBOTICSLAB_KINEMATICS_DYNAMICS_FOUND OFF)
 
 # Register features.
 add_feature_info(webInterface ENABLE_webInterface "ASIBOT web interface.")
