@@ -45,4 +45,4 @@ include(ASIBOT_HMIDoc)
 include(ASIBOT_HMIPackage)
 
 # Generate a report of enabled/disabled features.
-feature_summary(FATAL_ON_MISSING_REQUIRED_PACKAGES WHAT ALL)
+feature_summary(WHAT ALL)
