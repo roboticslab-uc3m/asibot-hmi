@@ -71,8 +71,6 @@ install:
     --package-name ROBOTICSLAB_KINEMATICS_DYNAMICS
     --repo-url https://github.com/roboticslab-uc3m/kinematics-dynamics
     --repo-checkout develop
-    --prepend-to-linker-path lib/yarp
-    --additional-export-paths "YARP_DATA_DIRS;share/roboticslab-kinematics-dynamics"
 
 before_script:
   - mkdir -p "$TRAVIS_BUILD_DIR/build" && cd "$_"
