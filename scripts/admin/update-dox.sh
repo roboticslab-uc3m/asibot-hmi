@@ -5,12 +5,10 @@
 # crontab -e
 # 30 2 * * * /your/command
 
+path="$HOME/asibot-hmi"
 echo "Update asibot-hmi..."
-cd $HOME/asibot-hmi
-git pull
+git -C "$path" pull
 echo "Doxy asibot-hmi..."
-cd doc
-rm -r html
-/usr/bin/doxygen
-cd ../..
-
+path="$path/doc/build"
+mkdir -p "$path"
+make -C "$path" clean && make -C "$path" dox
