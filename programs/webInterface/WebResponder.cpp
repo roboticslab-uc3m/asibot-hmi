@@ -717,9 +717,8 @@ bool roboticslab::WebResponder::read(yarp::os::ConnectionReader& in)
         std::string inMovement = request.find("movement").asString();
         std::printf("Going to move axis [%s] towards the [%s].\n", theAxis.c_str(), inMovement.c_str());
         std::vector<double> cartCoords;
-        int state;
-        if(simCart) simCart->stat(state, cartCoords);
-        if(realCart) simCart->stat(state, cartCoords); // REAL OVERWRITES COORDS
+        if(simCart) simCart->stat(cartCoords);
+        if(realCart) simCart->stat(cartCoords); // REAL OVERWRITES COORDS
         std::printf("At: %f %f %f %f %f\n",cartCoords[0],cartCoords[1],cartCoords[2],cartCoords[3],cartCoords[4]);
         if(inMovement == std::string("right")) {
             std::printf("right movement...\n");
@@ -769,9 +768,8 @@ bool roboticslab::WebResponder::read(yarp::os::ConnectionReader& in)
             }
         } else if (origin == std::string("rel_base")) {
             std::vector<double> cartCoords;
-            int state;
-            if(simCart) simCart->stat(state, cartCoords);
-            if(realCart) simCart->stat(state, cartCoords); // REAL OVERWRITES COORDS
+            if(simCart) simCart->stat(cartCoords);
+            if(realCart) simCart->stat(cartCoords); // REAL OVERWRITES COORDS
             std::printf("At: %f %f %f %f %f\n",cartCoords[0],cartCoords[1],cartCoords[2],cartCoords[3],cartCoords[4]);
             cartCoords[0]+= targets[0];
             cartCoords[1]+= targets[1];
@@ -800,9 +798,8 @@ bool roboticslab::WebResponder::read(yarp::os::ConnectionReader& in)
         return response.write(*out);
     } else if (code=="capture.0") {
         std::vector<double> captureX;
-        int state;
-        if(simCart) simCart->stat(state, captureX);
-        if(realCart) simCart->stat(state, captureX); // REAL OVERWRITES COORDS
+        if(simCart) simCart->stat(captureX);
+        if(realCart) simCart->stat(captureX); // REAL OVERWRITES COORDS
         for (int i = 0; i < captureX.size(); i++)
             this->captureX[i] = captureX[i];
         std::printf("At: %f %f %f %f %f\n",captureX[0],captureX[1],captureX[2],captureX[3],captureX[4]);
