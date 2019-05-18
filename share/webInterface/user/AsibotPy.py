@@ -33,7 +33,7 @@ class CartesianClient:
         data = miInput.get(0).asList()
         del res[:]
         for elem in range(0,data.size()):
-            res.append(data.get(elem).asDouble())
+            res.append(data.get(elem).asFloat64())
         return True
 
     def stop(self):
@@ -52,12 +52,12 @@ class CartesianClient:
         dBottle = yarp.Bottle()
         dBottle = miOutput.addList()
         for elem in range(0,len(xd)):
-            dBottle.addDouble(xd[elem])
+            dBottle.addFloat64(xd[elem])
         self.p.write(miOutput, miInput)
         data = miInput.get(0).asList()
         del res[:]
         for elem in range(0,data.size()):
-            res.append(data.get(elem).asDouble())
+            res.append(data.get(elem).asFloat64())
         return True
 
     def movj(self, xd):
@@ -68,7 +68,7 @@ class CartesianClient:
         dBottle = yarp.Bottle()
         dBottle = miOutput.addList()
         for elem in range(0,len(xd)):
-            dBottle.addDouble(xd[elem])
+            dBottle.addFloat64(xd[elem])
         self.p.write(miOutput, miInput)
         return True
 
@@ -80,7 +80,7 @@ class CartesianClient:
         dBottle = yarp.Bottle()
         dBottle = miOutput.addList()
         for elem in range(0,len(xd)):
-            dBottle.addDouble(xd[elem])
+            dBottle.addFloat64(xd[elem])
         self.p.write(miOutput, miInput)
         return True
 

@@ -19,7 +19,7 @@ bool roboticslab::WebInterface::configure(yarp::os::ResourceFinder &rf)
     std::string resources = DEFAULT_RESOURCES;
     std::string webIp = DEFAULT_WEB_IP;
     int webPort = DEFAULT_WEB_PORT;
-    
+
     std::printf("--------------------------------------------------------------\n");
     if (rf.check("help")) {
         std::printf("WebInterface Options:\n");
@@ -30,10 +30,10 @@ bool roboticslab::WebInterface::configure(yarp::os::ResourceFinder &rf)
     }
 
     counter = 0;
-    if(rf.check("period")) period = rf.find("period").asDouble();
+    if(rf.check("period")) period = rf.find("period").asFloat64();
     if(rf.check("resources")) resources = rf.find("resources").asString();
     if(rf.check("webIp")) webIp = rf.find("webIp").asString();
-    if(rf.check("webPort")) webPort = rf.find("webPort").asInt();
+    if(rf.check("webPort")) webPort = rf.find("webPort").asInt32();
     std::printf("WebInterface using period: %f, resources: %s.\n", period,resources.c_str());
     std::printf("WebInterface using webIp: %s, webPort: %d.\n",webIp.c_str(),webPort);
 

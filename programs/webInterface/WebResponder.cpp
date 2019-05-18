@@ -1005,7 +1005,7 @@ bool roboticslab::WebResponder::read(yarp::os::ConnectionReader& in)
 
         response.addString(prefix);
         response.addString("stream");
-        response.addInt(1);
+        response.addInt32(1);
         return response.write(*out);
     }
 
