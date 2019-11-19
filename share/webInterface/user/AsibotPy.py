@@ -1,11 +1,11 @@
 import yarp
 
-VOCAB_STAT = yarp.Vocab_encode('stat')
-VOCAB_INV = yarp.Vocab_encode('inv')
-VOCAB_MOVJ = yarp.Vocab_encode('movj')
-VOCAB_MOVL = yarp.Vocab_encode('movl')
-VOCAB_MY_STOP = yarp.Vocab_encode('stop')
-VOCAB_WAIT = yarp.Vocab_encode('wait')
+VOCAB_STAT = yarp.encode('stat')
+VOCAB_INV = yarp.encode('inv')
+VOCAB_MOVJ = yarp.encode('movj')
+VOCAB_MOVL = yarp.encode('movl')
+VOCAB_MY_STOP = yarp.encode('stop')
+VOCAB_WAIT = yarp.encode('wait')
 
 class CartesianClient:
     p = yarp.Port()
