@@ -1,11 +1,11 @@
 import yarp
 
-VOCAB_STAT = yarp.Vocab_encode('stat')
-VOCAB_INV = yarp.Vocab_encode('inv')
-VOCAB_MOVJ = yarp.Vocab_encode('movj')
-VOCAB_MOVL = yarp.Vocab_encode('movl')
-VOCAB_MY_STOP = yarp.Vocab_encode('stop')
-VOCAB_WAIT = yarp.Vocab_encode('wait')
+VOCAB_STAT = yarp.encode('stat')
+VOCAB_INV = yarp.encode('inv')
+VOCAB_MOVJ = yarp.encode('movj')
+VOCAB_MOVL = yarp.encode('movl')
+VOCAB_MY_STOP = yarp.encode('stop')
+VOCAB_WAIT = yarp.encode('wait')
 
 class CartesianClient:
     p = yarp.Port()
@@ -33,7 +33,7 @@ class CartesianClient:
         data = miInput.get(0).asList()
         del res[:]
         for elem in range(0,data.size()):
-            res.append(data.get(elem).asDouble())
+            res.append(data.get(elem).asFloat64())
         return True
 
     def stop(self):
@@ -52,12 +52,12 @@ class CartesianClient:
         dBottle = yarp.Bottle()
         dBottle = miOutput.addList()
         for elem in range(0,len(xd)):
-            dBottle.addDouble(xd[elem])
+            dBottle.addFloat64(xd[elem])
         self.p.write(miOutput, miInput)
         data = miInput.get(0).asList()
         del res[:]
         for elem in range(0,data.size()):
-            res.append(data.get(elem).asDouble())
+            res.append(data.get(elem).asFloat64())
         return True
 
     def movj(self, xd):
@@ -68,7 +68,7 @@ class CartesianClient:
         dBottle = yarp.Bottle()
         dBottle = miOutput.addList()
         for elem in range(0,len(xd)):
-            dBottle.addDouble(xd[elem])
+            dBottle.addFloat64(xd[elem])
         self.p.write(miOutput, miInput)
         return True
 
@@ -80,7 +80,7 @@ class CartesianClient:
         dBottle = yarp.Bottle()
         dBottle = miOutput.addList()
         for elem in range(0,len(xd)):
-            dBottle.addDouble(xd[elem])
+            dBottle.addFloat64(xd[elem])
         self.p.write(miOutput, miInput)
         return True
 

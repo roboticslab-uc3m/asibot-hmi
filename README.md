@@ -23,7 +23,7 @@ Human-machine interface applications for ASIBOT.
 
 ## Status
 
-[![Build Status (Linux/OSX)](https://travis-ci.org/roboticslab-uc3m/asibot-hmi.svg?branch=develop)](https://travis-ci.org/roboticslab-uc3m/asibot-hmi)
+[![Build Status (Linux)](https://travis-ci.com/roboticslab-uc3m/asibot-hmi.svg?branch=develop)](https://travis-ci.com/roboticslab-uc3m/asibot-hmi)
 
 [![Coverage Status](https://coveralls.io/repos/roboticslab-uc3m/asibot-hmi/badge.svg)](https://coveralls.io/r/roboticslab-uc3m/asibot-hmi)
 
