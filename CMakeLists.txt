@@ -2,7 +2,7 @@
 # Authors: Robotics Lab UC3M
 # CopyPolicy: Released under the terms of the LGPLv2.1 or later
 
-cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 
 # Start a project.
 project(ASIBOT_HMI LANGUAGES CXX)
@@ -11,8 +11,8 @@ project(ASIBOT_HMI LANGUAGES CXX)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 # Hard dependencies.
-find_package(YCM 0.10 REQUIRED)
-find_package(YARP 3.1 REQUIRED COMPONENTS OS dev)
+find_package(YCM 0.11 REQUIRED)
+find_package(YARP 3.3 REQUIRED COMPONENTS os dev)
 find_package(COLOR_DEBUG REQUIRED)
 
 # Soft dependencies.
