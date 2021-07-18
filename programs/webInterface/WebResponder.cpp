@@ -15,8 +15,14 @@
 #include <dirent.h>  // for listing directory contents
 #endif
 
+using namespace roboticslab;
+
+constexpr auto JOYPAD_RELMOVE = 5; // [deg]
+constexpr auto CJOYPAD_RELMOVE_POS = 0.10; // [m]
+constexpr auto CJOYPAD_RELMOVE_ORI = 15; // [deg]
+
 /************************************************************************/
-bool roboticslab::WebResponder::init()
+bool WebResponder::init()
 {
     simConnected = false;
     realConnected = false;
@@ -31,7 +37,7 @@ bool roboticslab::WebResponder::init()
 }
 
 /************************************************************************/
-bool roboticslab::WebResponder::closeDevices()
+bool WebResponder::closeDevices()
 {
     if(realDevice.isValid())
         realDevice.close();
@@ -43,28 +49,28 @@ bool roboticslab::WebResponder::closeDevices()
 }
 
 /************************************************************************/
-bool roboticslab::WebResponder::setResourceFinder(yarp::os::ResourceFinder &rf)
+bool WebResponder::setResourceFinder(yarp::os::ResourceFinder &rf)
 {
     this->rf = rf;
     return true;
 }
 
 /************************************************************************/
-bool roboticslab::WebResponder::setUserPath(const std::string& _userPath)
+bool WebResponder::setUserPath(const std::string& _userPath)
 {
     userPath = _userPath;
     return true;
 }
 
 /************************************************************************/
-bool roboticslab::WebResponder::setResourcePath(const std::string& _resourcePath)
+bool WebResponder::setResourcePath(const std::string& _resourcePath)
 {
     resourcePath = _resourcePath;
     return true;
 }
 
 /************************************************************************/
-std::string& roboticslab::WebResponder::replaceAll(std::string& context, const std::string& from, const std::string& to)
+std::string& WebResponder::replaceAll(std::string& context, const std::string& from, const std::string& to)
 {
     // thank you Bruce Eckel for this one!! (TICPP-2nd-ed-Vol-two)
     std::size_t lookHere = 0;
@@ -77,14 +83,14 @@ std::string& roboticslab::WebResponder::replaceAll(std::string& context, const s
 }
 
 /************************************************************************/
-std::string roboticslab::WebResponder::readHtml(const std::string& fileName)
+std::string WebResponder::readHtml(const std::string& fileName)
 {
     std::string filePath = rf.findFileByName("html/"+fileName);
     return readFile(filePath);
 }
 
 /************************************************************************/
-std::string roboticslab::WebResponder::readFile(const std::string& filePath)
+std::string WebResponder::readFile(const std::string& filePath)
 {
     std::printf("filePath: %s\n",filePath.c_str());
     // thank you Tyler McHenry @ nerdland.net and KeithB @ ndssl.vbi.vt.edu for this algorithm
@@ -111,7 +117,7 @@ std::string roboticslab::WebResponder::readFile(const std::string& filePath)
 }
 
 /************************************************************************/
-bool roboticslab::WebResponder::appendToFile(const std::string& fileName, const std::string& inString)
+bool WebResponder::appendToFile(const std::string& fileName, const std::string& inString)
 {
     std::string filePath = userPath + fileName;
     std::printf("saving: %s\n",inString.c_str());
@@ -123,7 +129,7 @@ bool roboticslab::WebResponder::appendToFile(const std::string& fileName, const 
 }
 
 /************************************************************************/
-bool roboticslab::WebResponder::rewriteFile(const std::string& fileName, const std::string& inString)
+bool WebResponder::rewriteFile(const std::string& fileName, const std::string& inString)
 {
     std::string filePath = userPath + fileName;
     std::printf("rewriting: %s\n",inString.c_str());
@@ -135,7 +141,7 @@ bool roboticslab::WebResponder::rewriteFile(const std::string& fileName, const s
 }
 
 /************************************************************************/
-bool roboticslab::WebResponder::deleteFile(const std::string& absFile)
+bool WebResponder::deleteFile(const std::string& absFile)
 {
     if (std::remove(absFile.c_str()) != 0 ) {
         std::printf("[error] could not delete file");
@@ -145,7 +151,7 @@ bool roboticslab::WebResponder::deleteFile(const std::string& absFile)
 }
 
 /************************************************************************/
-int roboticslab::WebResponder::stringToInt(const std::string& inString)
+int WebResponder::stringToInt(const std::string& inString)
 {
     int outInt;
     std::istringstream buffer(inString.c_str());
@@ -155,7 +161,7 @@ int roboticslab::WebResponder::stringToInt(const std::string& inString)
 }
 
 /************************************************************************/
-double roboticslab::WebResponder::stringToDouble(const std::string& inString)
+double WebResponder::stringToDouble(const std::string& inString)
 {
     double outDouble;
     std::istringstream buffer(inString.c_str());
@@ -165,7 +171,7 @@ double roboticslab::WebResponder::stringToDouble(const std::string& inString)
 }
 
 /************************************************************************/
-std::string roboticslab::WebResponder::doubleToString(const double& inDouble)
+std::string WebResponder::doubleToString(const double& inDouble)
 {
     // [thank you Adam Rosenfield] http://stackoverflow.com/questions/1123201/convert-double-to-string-c
     std::ostringstream s;
@@ -174,7 +180,7 @@ std::string roboticslab::WebResponder::doubleToString(const double& inDouble)
 }
 
 /************************************************************************/
-std::string roboticslab::WebResponder::intToString(const int& inInt)
+std::string WebResponder::intToString(const int& inInt)
 {
     std::ostringstream s;
     s << inInt;
@@ -182,7 +188,7 @@ std::string roboticslab::WebResponder::intToString(const int& inInt)
 }
 
 /************************************************************************/
-std::string roboticslab::WebResponder::pipedExec(const std::string& cmd)
+std::string WebResponder::pipedExec(const std::string& cmd)
 {
     // http://stackoverflow.com/a/478960
     const int bufferSize = 128;
@@ -213,7 +219,7 @@ std::string roboticslab::WebResponder::pipedExec(const std::string& cmd)
 }
 
 /************************************************************************/
-std::string roboticslab::WebResponder::pointButtonCreator(const std::string& pointsFile)
+std::string WebResponder::pointButtonCreator(const std::string& pointsFile)
 {
     std::string ret;
     std::printf("Reading points from file: %s\n",pointsFile.c_str());
@@ -255,7 +261,7 @@ std::string roboticslab::WebResponder::pointButtonCreator(const std::string& poi
 }
 
 /************************************************************************/
-std::string roboticslab::WebResponder::wordOptionCreator(const std::string& wordsFile)
+std::string WebResponder::wordOptionCreator(const std::string& wordsFile)
 {
     std::string ret;
     std::printf("Reading words from file: %s\n",wordsFile.c_str());
@@ -292,7 +298,7 @@ std::string roboticslab::WebResponder::wordOptionCreator(const std::string& word
 }
 
 #ifdef WIN32
-std::string roboticslab::WebResponder::fileListCreator() {
+std::string WebResponder::fileListCreator() {
     std::string ret;
     std::string filePath = userPath.substr(0, filePath.size() - 1) + "\\*";
     std::printf("Reading files from: %s\n", filePath.c_str());
@@ -316,7 +322,7 @@ std::string roboticslab::WebResponder::fileListCreator() {
 }
 
 /************************************************************************/
-std::string roboticslab::WebResponder::taskListCreator() {
+std::string WebResponder::taskListCreator() {
     std::string ret;
     std::string filePath = userPath.substr(0, filePath.size() - 1) + "\\*";
     std::printf("Reading files from: %s\n", filePath.c_str());
@@ -340,7 +346,7 @@ std::string roboticslab::WebResponder::taskListCreator() {
 }
 
 /************************************************************************/
-std::string roboticslab::WebResponder::taskButtonCreator() {
+std::string WebResponder::taskButtonCreator() {
     std::string ret;
     std::string filePath = userPath.substr(0, filePath.size() - 1) + "\\*";
     std::printf("Reading files from: %s\n", filePath.c_str());
@@ -396,7 +402,7 @@ std::string roboticslab::WebResponder::taskButtonCreator() {
 #else
 
 /************************************************************************/
-std::string roboticslab::WebResponder::fileListCreator()
+std::string WebResponder::fileListCreator()
 {
     std::string ret;
     std::string filePath = userPath;
@@ -421,7 +427,7 @@ std::string roboticslab::WebResponder::fileListCreator()
 }
 
 /************************************************************************/
-std::string roboticslab::WebResponder::taskListCreator()
+std::string WebResponder::taskListCreator()
 {
     std::string ret;
     std::string filePath = userPath;
@@ -446,7 +452,7 @@ std::string roboticslab::WebResponder::taskListCreator()
 }
 
 /************************************************************************/
-std::string roboticslab::WebResponder::taskButtonCreator()
+std::string WebResponder::taskButtonCreator()
 {
     std::string ret;
     std::string filePath = userPath;
@@ -503,13 +509,13 @@ std::string roboticslab::WebResponder::taskButtonCreator()
 #endif
 
 /************************************************************************/
-std::string roboticslab::WebResponder::getCss()
+std::string WebResponder::getCss()
 {
     return std::string(readHtml("style.css").c_str());
 }
 
 /************************************************************************/
-bool roboticslab::WebResponder::read(yarp::os::ConnectionReader& in)
+bool WebResponder::read(yarp::os::ConnectionReader& in)
 {
     yarp::os::Bottle request, response;
     if (!request.read(in)) return false;

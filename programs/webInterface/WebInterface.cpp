@@ -9,11 +9,18 @@
 #include <yarp/os/Value.h>
 #include <yarp/os/Bottle.h>
 
-/************************************************************************/
-roboticslab::WebInterface::WebInterface() { }
+using namespace roboticslab;
+
+constexpr auto DEFAULT_PERIOD = 5; // [s]
+constexpr auto DEFAULT_RESOURCES = "robots.uc3m.es/webInterface/html";
+constexpr auto DEFAULT_WEB_IP = "localhost";
+constexpr auto DEFAULT_WEB_PORT = 8080;
 
 /************************************************************************/
-bool roboticslab::WebInterface::configure(yarp::os::ResourceFinder &rf)
+WebInterface::WebInterface() { }
+
+/************************************************************************/
+bool WebInterface::configure(yarp::os::ResourceFinder &rf)
 {
     period = DEFAULT_PERIOD;  // double
     std::string resources = DEFAULT_RESOURCES;
@@ -67,7 +74,7 @@ bool roboticslab::WebInterface::configure(yarp::os::ResourceFinder &rf)
 }
 
 /************************************************************************/
-bool roboticslab::WebInterface::updateModule()
+bool WebInterface::updateModule()
 {
     std::printf("Server running, visit: http://%s:%d/index\n",
                    contact.getHost().c_str(),
@@ -84,13 +91,13 @@ bool roboticslab::WebInterface::updateModule()
 }
 
 /************************************************************************/
-double roboticslab::WebInterface::getPeriod()
+double WebInterface::getPeriod()
 {
     return period;  // seconds
 }
 
 /************************************************************************/
-bool roboticslab::WebInterface::interruptModule()
+bool WebInterface::interruptModule()
 {
     server.interrupt();
     responder.closeDevices();

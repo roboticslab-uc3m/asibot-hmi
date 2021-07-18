@@ -9,11 +9,6 @@
 
 #include "WebResponder.hpp"
 
-#define DEFAULT_PERIOD 5   // [s]
-#define DEFAULT_RESOURCES "robots.uc3m.es/webInterface/html"
-#define DEFAULT_WEB_IP "localhost"
-#define DEFAULT_WEB_PORT 8080
-
 namespace roboticslab
 {
 
@@ -25,7 +20,7 @@ class WebInterface : public yarp::os::RFModule
 public:
 
     WebInterface();
-    bool configure(yarp::os::ResourceFinder &rf);
+    bool configure(yarp::os::ResourceFinder &rf) override;
 
 protected:
 
@@ -33,14 +28,14 @@ protected:
     WebResponder responder;
     yarp::os::Contact contact;  // will get webIp and webPort
 
-    bool updateModule();
-    bool interruptModule();
-    double getPeriod();
+    bool updateModule() override;
+    bool interruptModule() override;
+    double getPeriod() override;
 
     double period;
     int counter;
 };
 
-}  //-- namespace roboticslab
+} //-- namespace roboticslab
 
-#endif  //-- __WEB_INTERFACE_HPP__
+#endif //-- __WEB_INTERFACE_HPP__

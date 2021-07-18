@@ -15,10 +15,7 @@
 
 #include <ICartesianControl.h>
 
-#define JOYPAD_RELMOVE 5  // [deg]
-#define CJOYPAD_RELMOVE_POS 0.10  // [m]
-#define CJOYPAD_RELMOVE_ORI 15  // [deg]
-#define NUM_CART_COORDS 5  // 
+constexpr auto NUM_CART_COORDS = 5;
 
 namespace roboticslab
 {
@@ -39,7 +36,7 @@ public:
     std::string getCss();
     bool init();
     bool closeDevices();
-    bool read(yarp::os::ConnectionReader& in);
+    bool read(yarp::os::ConnectionReader& in) override;
     bool setResourceFinder(yarp::os::ResourceFinder &rf);
     bool setUserPath(const std::string& _userPath);
     bool setResourcePath(const std::string& _resourcePath);
@@ -83,6 +80,6 @@ protected:
     std::string lastEditName;
 };
 
-}  //-- namespace roboticslab
+} //-- namespace roboticslab
 
-#endif  //-- __WEB_RESPONDER_HPP__
+#endif //-- __WEB_RESPONDER_HPP__
