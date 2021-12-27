@@ -1,4 +1,4 @@
-[![Asibot-hmi Homepage](https://img.shields.io/badge/asibot-hmi-orange.svg)](http://robots.uc3m.es/dox-asibot-main)
+[![Asibot-hmi Homepage](https://img.shields.io/badge/asibot-hmi-orange.svg)](http://roboticslab.uc3m.es/roboticslab/robot/asibot)
 
 Human-machine interface applications for ASIBOT.
 
