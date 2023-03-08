@@ -32,9 +32,11 @@
 CMakeLists.txt.user
 **/build*/
 
-IDE-specific
+# IDE-specific
 /.project
 /.cproject
+/.vs/
+/.vscode/
 
 # Other
 /external/
