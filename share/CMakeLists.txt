@@ -2,5 +2,5 @@
 # Authors: Robotics Lab UC3M
 # CopyPolicy: Released under the terms of the LGPLv2.1 or later
 
-### Go through single applications
-add_subdirectory(webInterface)
+yarp_install(DIRECTORY webInterface
+             DESTINATION ${ASIBOT_CONTEXTS_INSTALL_DIR})
