@@ -25,8 +25,6 @@ Human-machine interface applications for ASIBOT.
 
 [![CI (Linux)](https://github.com/roboticslab-uc3m/asibot-hmi/workflows/Continuous%20Integration/badge.svg)](https://github.com/roboticslab-uc3m/asibot-hmi/actions)
 
-[![Coverage Status](https://coveralls.io/repos/roboticslab-uc3m/asibot-hmi/badge.svg)](https://coveralls.io/r/roboticslab-uc3m/asibot-hmi)
-
 [![Issues](https://img.shields.io/github/issues/roboticslab-uc3m/asibot-hmi.svg?label=Issues)](https://github.com/roboticslab-uc3m/asibot-hmi/issues)
 
 ## Links of interest:
